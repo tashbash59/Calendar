@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="654.0" prefWidth="1016.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="50.0" prefWidth="1016.0" style="-fx-background-color: #636363;" />
+      <AnchorPane layoutX="45.0" layoutY="112.0" prefHeight="196.0" prefWidth="325.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
+         <children>
+            <Label layoutX="22.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="пн" />
+            <Label layoutX="60.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="вт" />
+            <Label layoutX="104.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="ср" />
+            <Label layoutX="146.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="чт" />
+            <Label layoutX="191.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="пт" />
+            <Label layoutX="235.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="сб" />
+            <Label layoutX="279.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="вс" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="45.0" layoutY="370.0" prefHeight="236.0" prefWidth="325.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
+         <children>
+            <TextField layoutX="33.0" layoutY="195.0" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: #D9D9D9;" />
+            <Button layoutX="247.0" layoutY="195.0" mnemonicParsing="false" style="-fx-background-color: #D9D9D9;" text="+" />
+            <RadioButton layoutX="33.0" layoutY="32.0" mnemonicParsing="false" text="первая задача" />
+         </children></AnchorPane>
+      <Label layoutX="58.0" layoutY="70.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Календарь" />
+      <Label layoutX="58.0" layoutY="320.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Задачи" />
+      <AnchorPane layoutX="457.0" layoutY="112.0" prefHeight="498.0" prefWidth="488.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
+         <children>
+            <AnchorPane layoutX="27.0" layoutY="23.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9;" />
+            <AnchorPane layoutX="27.0" layoutY="57.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9;" />
+            <AnchorPane layoutX="27.0" layoutY="92.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9;" />
+            <ImageView fitHeight="178.0" fitWidth="257.0" layoutX="146.0" layoutY="176.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@mierda.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="42.0" layoutY="413.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" text="покормить" />
+            <Button layoutX="150.0" layoutY="413.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" text="вылечить" />
+            <Button layoutX="259.0" layoutY="413.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" text="поиграть" />
+            <Button layoutX="367.0" layoutY="413.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" text="возродить" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="480.0" layoutY="70.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Миерда" />
+   </children>
+</AnchorPane>
