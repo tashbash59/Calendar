@@ -3,8 +3,8 @@ package com.example.mierda.calendar;
 import java.util.Calendar;
 
 public class CalendarEntry {
-    Calendar date;
-    String task;
+    private Calendar date;
+    private String task;
 
     CalendarEntry(Calendar date, String task) {
         this.date = date;
