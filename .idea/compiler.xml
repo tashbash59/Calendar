@@ -9,8 +9,5 @@
         <module name="mierda" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="mierda" target="16" />
-    </bytecodeTargetLevel>
   </component>
 </project>
