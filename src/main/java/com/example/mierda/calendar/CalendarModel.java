@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 public class CalendarModel {
-    private final int CALENDAR_COLUMNS = 7;
-    private final int CALENDAR_ROWS = 6;
+    private static final int CALENDAR_COLUMNS = 7;
+    private static final int CALENDAR_ROWS = 6;
 
     private Calendar startOfDisplayedMonth;
     private CalendarEntry[][] entriesOfDisplayedMonth;
@@ -25,6 +25,28 @@ public class CalendarModel {
         Arrays.stream(this.entriesOfDisplayedMonth)
             .forEach(row -> System.out.println(Arrays.toString(row)));
     }
+
+    public CalendarEntry getEntry(int row, int col) {
+        return this.entriesOfDisplayedMonth[row][col];
+    }
+
+    public void generateRandomTasks() {
+        String[] tasks = {"Wash the dishes", "Mop the floor",
+                          "Finish calendar"};
+        Arrays.stream(this.entriesOfDisplayedMonth)
+            .forEach(row -> Arrays.stream(row).forEach(element -> {
+                if (element == null)
+                    return;
+                String task =
+                    tasks[(int)Math.floor(Math.random() * tasks.length)]
+                        .toString();
+                element.setTask(task);
+            }));
+    }
+
+    public int getNumberOfRows() { return this.CALENDAR_ROWS; }
+
+    public int getNumberOfColumns() { return this.CALENDAR_COLUMNS; }
 
     private CalendarEntry[][] calculateEntries() {
         Calendar currentDay = (Calendar)this.startOfDisplayedMonth.clone();

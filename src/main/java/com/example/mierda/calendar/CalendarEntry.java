@@ -14,4 +14,7 @@ public class CalendarEntry {
     public String toString() {
         return Integer.toString(this.date.get(Calendar.DAY_OF_MONTH));
     }
+    public String getTask() { return task; }
+
+    public void setTask(String task) { this.task = task; }
 }
