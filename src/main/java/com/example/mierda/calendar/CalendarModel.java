@@ -65,7 +65,7 @@ public class CalendarModel {
         int dayOfWeekOffset = currentDay.get(Calendar.DAY_OF_WEEK);
         final int sundayIndex = 1;
         dayOfWeekOffset =
-            dayOfWeekOffset == sundayIndex ? 6 : dayOfWeekOffset - 1;
+            dayOfWeekOffset == sundayIndex ? 6 : dayOfWeekOffset - 2;
         CalendarEntry[][] calendarEntries =
             new CalendarEntry[this.CALENDAR_ROWS][this.CALENDAR_COLUMNS];
     Outer:
