@@ -1,5 +1,6 @@
 package com.example.mierda.calendar;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -47,6 +48,16 @@ public class CalendarModel {
     public int getNumberOfRows() { return this.CALENDAR_ROWS; }
 
     public int getNumberOfColumns() { return this.CALENDAR_COLUMNS; }
+
+    public void selectNextMonth() {
+        this.startOfDisplayedMonth.add(Calendar.MONTH, 1);
+        this.entriesOfDisplayedMonth = this.calculateEntries();
+    };
+
+    public void selectPreviousMonth() {
+        this.startOfDisplayedMonth.add(Calendar.MONTH, -1);
+        this.entriesOfDisplayedMonth = this.calculateEntries();
+    }
 
     private CalendarEntry[][] calculateEntries() {
         Calendar currentDay = (Calendar)this.startOfDisplayedMonth.clone();

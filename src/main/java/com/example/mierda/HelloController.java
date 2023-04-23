@@ -4,6 +4,7 @@ import com.example.mierda.calendar.CalendarEntry;
 import com.example.mierda.calendar.CalendarModel;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.event.EventHandler;
@@ -30,6 +31,8 @@ public class HelloController implements Initializable {
     @FXML public AnchorPane happyBar;
     @FXML public Label moneyLabel;
 
+    private CalendarModel calendarModel;
+
     static Integer money = 1000;
 
     @Override
@@ -43,21 +46,33 @@ public class HelloController implements Initializable {
     }
 
     private void initCalendarComponent() {
-        CalendarModel calendarModel = new CalendarModel();
-        calendarModel.generateRandomTasks();
+        var children = new ArrayList<>(this.calendarComponent.getChildren());
+        for (javafx.scene.Node child : children) {
+            String id = child.getId();
+            if (id == null)
+                continue;
+            if (!id.equals("CalendarEntry"))
+                continue;
+            this.calendarComponent.getChildren().remove(child);
+        }
+
+        if (this.calendarModel == null)
+            this.calendarModel = new CalendarModel();
+        this.calendarModel.generateRandomTasks();
         final double[] xOffsets = {22.0,  60.0,  104.0, 146.0,
                                    191.0, 235.0, 279.0};
         final double yCellWidth = 14.0;
         final double yBaseOffset = 10.0;
-        for (int row = 0; row < calendarModel.getNumberOfRows(); ++row) {
-            for (int column = 0; column < calendarModel.getNumberOfColumns();
-                 ++column) {
-                CalendarEntry entry = calendarModel.getEntry(row, column);
+        for (int row = 0; row < this.calendarModel.getNumberOfRows(); ++row) {
+            for (int column = 0;
+                 column < this.calendarModel.getNumberOfColumns(); ++column) {
+                CalendarEntry entry = this.calendarModel.getEntry(row, column);
                 Label label = new Label(entry == null ? "" : entry.toString());
                 label.setLayoutX(xOffsets[column]);
                 label.setLayoutY((yCellWidth + yBaseOffset) * (row + 2));
                 label.setMinWidth(yCellWidth);
                 label.setAlignment(Pos.CENTER);
+                label.setId("CalendarEntry");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
@@ -116,5 +131,17 @@ public class HelloController implements Initializable {
                     }
                 }
             });
+    }
+
+    @FXML
+    public void selectNextMonth() {
+        this.calendarModel.selectNextMonth();
+        this.initCalendarComponent();
+    }
+
+    @FXML
+    public void selectPreviousMonth() {
+        this.calendarModel.selectPreviousMonth();
+        this.initCalendarComponent();
     }
 }

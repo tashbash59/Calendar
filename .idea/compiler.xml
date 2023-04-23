@@ -9,8 +9,5 @@
         <module name="CW" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="CW" target="16" />
-    </bytecodeTargetLevel>
   </component>
 </project>
