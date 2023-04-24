@@ -31,6 +31,7 @@ public class HelloController implements Initializable {
     @FXML public Button happy;
     @FXML public AnchorPane happyBar;
     @FXML public Label moneyLabel;
+    @FXML public AnchorPane gameAnchor;
 
     private CalendarModel calendarModel;
 
@@ -109,8 +110,9 @@ public class HelloController implements Initializable {
             new File(currentDirectory + "/src/main/images/sleep.png");
         Image ANIMATION_IMAGE = new Image(animationFile.toURI().toString());
         File defaultMierda =
-            new File("currentDirectory + src/main/images/mierda.png");
+            new File(currentDirectory + "/src/main/images/default.png");
         Image MIERDA = new Image(defaultMierda.toURI().toString());
+
 
         final int COLUMNS = 3;
         final int COUNT = 9;
@@ -118,18 +120,23 @@ public class HelloController implements Initializable {
         final int OFFSET_Y = 1;
         final int WIDTH = 882;
         final int HEIGHT = 892;
+        final int timer = 2000;
 
         mierdaAnimation.setImage(ANIMATION_IMAGE);
         mierdaAnimation.setViewport(
             new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-        // final ImageView imageView = new ImageView(IMAGE);
-        // imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH,
-        // HEIGHT));
         final Animation animation =
-            new SpriteAnimation(mierdaAnimation, Duration.millis(1000), COUNT,
+            new SpriteAnimation(mierdaAnimation, Duration.millis(timer), COUNT,
                                 COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
+        gameAnchor.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                mierdaAnimation.setImage(MIERDA);
+            }
+        });
+
     }
 
     private void eating(AnchorPane bar, Button button) {

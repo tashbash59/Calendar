@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="654.0" prefWidth="1016.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mierda.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="654.0" prefWidth="1016.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mierda.HelloController">
    <children>
       <AnchorPane prefHeight="50.0" prefWidth="1016.0" style="-fx-background-color: #636363;" />
       <AnchorPane fx:id="calendarComponent" layoutX="45.0" layoutY="112.0" prefHeight="196.0" prefWidth="325.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
@@ -16,7 +16,6 @@
             <Label layoutX="191.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="пт" />
             <Label layoutX="235.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="сб" />
             <Label layoutX="279.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="вс" />
-            <Button onAction="#selectPreviousMonth" layoutX="-20.0" layoutY="80.0" text="&lt;" prefHeight="60.0" prefWidth="5.0" style="-fx-font-size: 18; -fx-padding: 2; -fx-background-color: transparent" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="45.0" layoutY="370.0" prefHeight="236.0" prefWidth="325.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
@@ -29,30 +28,69 @@
       <Label layoutX="58.0" layoutY="320.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Задачи" />
       <AnchorPane fx:id="gameAnchor" layoutX="457.0" layoutY="112.0" prefHeight="498.0" prefWidth="488.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
          <children>
-            <Button onAction="#selectNextMonth" layoutX="-82.0" layoutY="80.0" text=">" prefHeight="60.0" prefWidth="5.0" style="-fx-font-size: 18; -fx-padding: 2; -fx-background-color: transparent"  />
-            <AnchorPane layoutX="27.0" layoutY="23.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9;">
+            <AnchorPane layoutX="27.0" layoutY="23.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F2F2F2;">
                <children>
-                  <AnchorPane fx:id="eatBar" layoutX="1.0" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="295.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #FF976B;" />
+                  <AnchorPane fx:id="eatBar" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="295.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #FF976B;">
+                     <children>
+                        <Label layoutX="37.0" layoutY="2.0" prefHeight="18.0" prefWidth="64.0" text="здоровье" textFill="WHITE" />
+                     </children></AnchorPane>
                </children></AnchorPane>
-            <AnchorPane layoutX="27.0" layoutY="57.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9;">
+            <AnchorPane layoutX="27.0" layoutY="57.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F2F2F2;">
                <children>
-                  <AnchorPane fx:id="healthBar" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="258.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #84C7BF;" />
+                  <AnchorPane fx:id="healthBar" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="258.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #84C7BF;">
+                     <children>
+                        <Label layoutX="38.0" layoutY="3.0" prefHeight="18.0" prefWidth="64.0" text="голод" textFill="WHITE" />
+                     </children></AnchorPane>
                </children></AnchorPane>
-            <AnchorPane layoutX="27.0" layoutY="92.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9;">
+            <AnchorPane layoutX="27.0" layoutY="92.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F2F2F2;">
                <children>
-                  <AnchorPane fx:id="happyBar" layoutX="1.0" layoutY="1.0" maxWidth="434.0" prefHeight="20.0" prefWidth="206.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F9D30D;" />
+                  <AnchorPane fx:id="happyBar" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="206.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F9D30D;">
+                     <children>
+                        <Label layoutX="39.0" layoutY="1.0" prefHeight="18.0" prefWidth="64.0" text="счастье" textFill="WHITE" />
+                     </children></AnchorPane>
                </children></AnchorPane>
             <ImageView fx:id="mierdaAnimation" fitHeight="219.0" fitWidth="326.0" layoutX="111.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../images/mierda.png" />
                </image></ImageView>
-            <Button fx:id="eat" layoutX="42.0" layoutY="413.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" text="покормить" />
-            <Button fx:id="health" layoutX="150.0" layoutY="413.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" text="вылечить" />
-            <Button fx:id="happy" layoutX="259.0" layoutY="413.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" text="поиграть" />
-            <Button layoutX="367.0" layoutY="413.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" text="возродить" />
+            <Button fx:id="eat" layoutX="42.0" layoutY="422.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" text="покормить" />
+            <Button fx:id="health" layoutX="150.0" layoutY="422.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" text="вылечить" />
+            <Button fx:id="happy" layoutX="259.0" layoutY="422.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" text="поиграть" />
+            <Button layoutX="367.0" layoutY="422.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" text="возродить" />
             <Label fx:id="moneyLabel" layoutX="433.0" layoutY="127.0" style="-fx-font-weight: 400; -fx-font-size: 12.97;" text="0" />
+            <ImageView fitHeight="26.0" fitWidth="25.0" layoutX="406.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@money.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="26.0" fitWidth="25.0" layoutX="57.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@money.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="26.0" fitWidth="25.0" layoutX="164.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@money.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="26.0" fitWidth="25.0" layoutX="274.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@money.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="26.0" fitWidth="25.0" layoutX="386.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@money.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="80.0" layoutY="390.0" prefHeight="18.0" prefWidth="52.0" text="10" />
+            <Label layoutX="187.0" layoutY="390.0" prefHeight="18.0" prefWidth="52.0" text="10" />
+            <Label layoutX="297.0" layoutY="390.0" prefHeight="18.0" prefWidth="52.0" text="10" />
+            <Label layoutX="410.0" layoutY="390.0" prefHeight="18.0" prefWidth="52.0" text="10" />
          </children>
       </AnchorPane>
       <Label layoutX="480.0" layoutY="70.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Миерда" />
+      <Button layoutX="371.0" layoutY="188.0" onAction="#selectNextMonth" prefHeight="60.0" prefWidth="20.0" style="-fx-font-size: 18; -fx-padding: 2; -fx-background-color: transparent" text="&gt;" />
+      <Button layoutX="25.0" layoutY="188.0" onAction="#selectPreviousMonth" prefHeight="60.0" prefWidth="20.0" style="-fx-font-size: 18; -fx-padding: 2; -fx-background-color: transparent" text="&lt;" />
    </children>
 </AnchorPane>
