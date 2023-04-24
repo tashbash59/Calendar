@@ -16,6 +16,7 @@
             <Label layoutX="191.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="пт" />
             <Label layoutX="235.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="сб" />
             <Label layoutX="279.0" layoutY="14.0" style="-fx-font-size: 14px; -fx-font-weight: 400;" text="вс" />
+            <Button onAction="#selectPreviousMonth" layoutX="-20.0" layoutY="80.0" text="&lt;" prefHeight="60.0" prefWidth="5.0" style="-fx-font-size: 18; -fx-padding: 2; -fx-background-color: transparent" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="45.0" layoutY="370.0" prefHeight="236.0" prefWidth="325.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
@@ -28,6 +29,7 @@
       <Label layoutX="58.0" layoutY="320.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Задачи" />
       <AnchorPane fx:id="gameAnchor" layoutX="457.0" layoutY="112.0" prefHeight="498.0" prefWidth="488.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
          <children>
+            <Button onAction="#selectNextMonth" layoutX="-82.0" layoutY="80.0" text=">" prefHeight="60.0" prefWidth="5.0" style="-fx-font-size: 18; -fx-padding: 2; -fx-background-color: transparent"  />
             <AnchorPane layoutX="27.0" layoutY="23.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9;">
                <children>
                   <AnchorPane fx:id="eatBar" layoutX="1.0" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="295.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #FF976B;" />
