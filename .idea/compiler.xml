@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="CW" />
+        <module name="mierda" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CW" target="16" />
+    </bytecodeTargetLevel>
   </component>
 </project>

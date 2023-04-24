@@ -5,6 +5,7 @@ import com.example.mierda.calendar.CalendarModel;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.event.EventHandler;
@@ -68,18 +69,35 @@ public class HelloController implements Initializable {
                  column < this.calendarModel.getNumberOfColumns(); ++column) {
                 CalendarEntry entry = this.calendarModel.getEntry(row, column);
                 Label label = new Label(entry == null ? "" : entry.toString());
+                label.setMinWidth(yCellWidth);
+                boolean isToday =
+                    (entry != null &&
+                     entry.getDate().get(Calendar.DAY_OF_MONTH) ==
+                         (Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) &&
+                     entry.getDate().get(Calendar.MONTH) ==
+                         Calendar.getInstance().get(Calendar.MONTH) &&
+                     entry.getDate().get(Calendar.YEAR) ==
+                         Calendar.getInstance().get(Calendar.YEAR));
+                String selectedStyle =
+                    isToday
+                        ? "-fx-background-color: #caef6d; -fx-background-radius: 30px 15px;"
+                        : "";
+                if (isToday)
+                    label.setMinWidth(yCellWidth * 1.75);
                 label.setLayoutX(xOffsets[column]);
                 label.setLayoutY((yCellWidth + yBaseOffset) * (row + 2));
-                label.setMinWidth(yCellWidth);
                 label.setAlignment(Pos.CENTER);
                 label.setId("CalendarEntry");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        System.out.println(entry.getTask());
+                        if (entry != null) {
+                            System.out.println(entry.getTask());
+                        }
                     }
                 });
-                label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400;");
+                label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +
+                               selectedStyle);
                 this.calendarComponent.getChildren().add(label);
             }
         }
