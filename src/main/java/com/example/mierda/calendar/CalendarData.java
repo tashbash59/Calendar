@@ -7,18 +7,21 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 import org.json.JSONObject;
 
-public class CalendarDataLoader {
-    String fileLink;
+public class CalendarData {
+    String filepath;
     File openedFile;
     int money;
 
-    public CalendarDataLoader(String fileLink) {
+    private CalendarData(String filepath) { this.filepath = filepath; }
+
+    public static CalendarData fromPath(String filepath) {
         Scanner scanner = null;
+        CalendarData calendarData = new CalendarData(filepath);
         try {
             scanner =
-                new Scanner(Paths.get(fileLink), StandardCharsets.UTF_8.name());
+                new Scanner(Paths.get(filepath), StandardCharsets.UTF_8.name());
         } catch (IOException e) {
-            return;
+            return null;
         }
         String content = scanner.useDelimiter("\\A").next();
         if (scanner != null)
@@ -27,18 +30,15 @@ public class CalendarDataLoader {
         JSONObject tomJsonObject = new JSONObject(content);
 
         if (tomJsonObject.get("money") != null) {
-            this.money = 0;
+            calendarData.money = 0;
             try {
-                this.money = (Integer)tomJsonObject.get("money");
+                calendarData.money = (Integer)tomJsonObject.get("money");
             } catch (Exception e) {
                 System.out.println(
                     "Could not load money from configuration file");
             }
         }
-
-        System.out.println(this.money);
-
-        // System.out.println(tomJsonObject.toString(4));
+        return calendarData;
     }
 
     public int getMoney() { return this.money; }

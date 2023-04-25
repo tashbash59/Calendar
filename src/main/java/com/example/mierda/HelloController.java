@@ -1,6 +1,6 @@
 package com.example.mierda;
 
-import com.example.mierda.calendar.CalendarDataLoader;
+import com.example.mierda.calendar.CalendarData;
 import com.example.mierda.calendar.CalendarEntry;
 import com.example.mierda.calendar.CalendarModel;
 import java.io.File;
@@ -36,14 +36,13 @@ public class HelloController implements Initializable {
 
     private CalendarModel calendarModel;
 
-    private CalendarDataLoader calendarDataLoader = new CalendarDataLoader(
+    private CalendarData calendarData = CalendarData.fromPath(
         System.getProperty("user.dir") +
         "/src/main/resources/com/example/mierda/calendarData.json");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        moneyLabel.setText(
-            Integer.toString(this.calendarDataLoader.getMoney()));
+        moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
         initAnimation();
         initCalendarComponent();
         eating(eatBar, eat);
@@ -151,14 +150,14 @@ public class HelloController implements Initializable {
                 public void handle(MouseEvent mouseEvent) {
                     if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar) {
                         bar.setPrefWidth(bar.getWidth() + onePartBar);
-                        calendarDataLoader.addMoney(-10);
+                        calendarData.addMoney(-10);
                         moneyLabel.setText(
-                            Integer.toString(calendarDataLoader.getMoney()));
+                            Integer.toString(calendarData.getMoney()));
                     } else if (bar.getPrefWidth() < bar.getMaxWidth()) {
                         bar.setPrefWidth(bar.getMaxWidth());
-                        calendarDataLoader.addMoney(-10);
+                        calendarData.addMoney(-10);
                         moneyLabel.setText(
-                            Integer.toString(calendarDataLoader.getMoney()));
+                            Integer.toString(calendarData.getMoney()));
                     }
                 }
             });
