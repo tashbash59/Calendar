@@ -1,0 +1,12 @@
+{
+    "name": "MyMierda",
+    "money": 1000,
+    "tasks": {
+        "04.2023": [
+            ["21", "First task!"],
+            ["22", "Second task!"],
+            ["23", "Overlapping task!"]
+        ],
+        "05.2023": [["22", "Hello world"]]
+    }
+}
