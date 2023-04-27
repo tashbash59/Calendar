@@ -3,11 +3,14 @@ package com.example.mierda;
 import com.example.mierda.calendar.CalendarData;
 import com.example.mierda.calendar.CalendarEntry;
 import com.example.mierda.calendar.CalendarModel;
+import com.example.mierda.calendar.TaskLink;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.Vector;
 import javafx.animation.Animation;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -65,6 +68,19 @@ public class HelloController implements Initializable {
         if (this.calendarModel == null)
             this.calendarModel = new CalendarModel();
         this.calendarModel.generateRandomTasks();
+        Vector<TaskLink> taskData = this.calendarData.getMonthTasks(
+            this.calendarModel.getStartOfDisplayedMonth());
+        taskData.forEach(taskLink -> {
+            taskLink.getTasks().forEach(task -> {
+                try {
+                    this.calendarModel.addTask(
+                        Integer.parseInt(taskLink.getDay()), task);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            });
+        });
+
         final double[] xOffsets = {22.0,  60.0,  104.0, 146.0,
                                    191.0, 235.0, 279.0};
         final double yCellWidth = 14.0;

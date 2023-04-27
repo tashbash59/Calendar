@@ -2,6 +2,7 @@ package com.example.mierda.calendar;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Vector;
 
 public class CalendarModel {
     private static final int CALENDAR_COLUMNS = 7;
@@ -39,13 +40,28 @@ public class CalendarModel {
                     return;
                 String task =
                     tasks[(int)Math.floor(Math.random() * tasks.length)];
-                element.setTask(task);
+                element.addTask(task);
+            }));
+    }
+
+    public void addTask(int dateIndex, String task) {
+        Arrays.stream(this.entriesOfDisplayedMonth)
+            .forEach(row -> Arrays.stream(row).forEach(element -> {
+                if (element == null)
+                    return;
+                if (element.getDate().get(Calendar.DAY_OF_MONTH) != dateIndex)
+                    return;
+                element.addTask(task);
             }));
     }
 
     public int getNumberOfRows() { return CALENDAR_ROWS; }
 
     public int getNumberOfColumns() { return CALENDAR_COLUMNS; }
+
+    public Calendar getStartOfDisplayedMonth() {
+        return this.startOfDisplayedMonth;
+    }
 
     public void selectNextMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, 1);
@@ -71,8 +87,8 @@ public class CalendarModel {
         for (int row = 0; row < calendarEntries.length; ++row) {
             for (int column = row == 0 ? dayOfWeekOffset : 0;
                  column < calendarEntries[row].length; ++column) {
-                CalendarEntry entry =
-                    new CalendarEntry((Calendar)currentDay.clone(), "");
+                CalendarEntry entry = new CalendarEntry(
+                    (Calendar)currentDay.clone(), new Vector<String>());
                 calendarEntries[row][column] = entry;
                 currentDay.add(Calendar.DAY_OF_WEEK, 1);
                 if (currentDay.get(Calendar.MONTH) != currentMonthIndex)

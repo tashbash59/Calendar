@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -134,44 +136,22 @@ public class CalendarData {
         }
     }
 
+    public Vector<TaskLink> getMonthTasks(Calendar month) {
+        if (this.monthToTasks == null)
+            return null;
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("MM.yyyy");
+            String key = formatter.format(month.getTime());
+            if (this.monthToTasks.get(key) == null)
+                return null;
+            return this.monthToTasks.get(key);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public int getMoney() { return this.money; }
 
     public void addMoney(int amount) { this.money += amount; }
-}
-
-class TaskLink {
-    String day;
-    Vector<String> tasks;
-
-    public TaskLink(String day, Vector<String> tasks) {
-        this.day = day;
-        this.tasks = tasks;
-    }
-
-    public static TaskLink fromJSONObject(JSONObject object) {
-        if (object.keySet().size() != 1)
-            return null;
-        Object key = object.keys().next();
-        if (!key.getClass().getSimpleName().equals("String"))
-            return null;
-        Object value = object.get((String)key);
-        if (!value.getClass().getSimpleName().equals("JSONArray"))
-            return null;
-        Vector<String> tasks = new Vector<>();
-        Iterator<Object> tasksIterator = ((JSONArray)value).iterator();
-        while (tasksIterator.hasNext()) {
-            Object task = tasksIterator.next();
-            if (!key.getClass().getSimpleName().equals("String"))
-                continue;
-            tasks.add((String)task);
-        }
-        return new TaskLink((String)key, tasks);
-    }
-
-    public JSONObject toJSONObect() {
-        JSONObject result = new JSONObject();
-        JSONArray jsonTasks = new JSONArray(this.tasks.toArray());
-        result.put(this.day, jsonTasks);
-        return result;
-    }
 }
