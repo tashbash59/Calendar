@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -36,6 +37,7 @@ public class HelloController implements Initializable {
     @FXML public AnchorPane happyBar;
     @FXML public Label moneyLabel;
     @FXML public AnchorPane gameAnchor;
+    @FXML public AnchorPane taskPane;
 
     private CalendarModel calendarModel;
 
@@ -49,9 +51,17 @@ public class HelloController implements Initializable {
         moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
         initAnimation();
         initCalendarComponent();
+        initTaskPane();
         eating(eatBar, eat);
         eating(healthBar, health);
         eating(happyBar, happy);
+    }
+
+    private void initTaskPane() {
+        var children = new ArrayList<>(this.taskPane.getChildren());
+        for (javafx.scene.Node child : children) {
+            this.taskPane.getChildren().remove(child);
+        }
     }
 
     private void initCalendarComponent() {
@@ -111,11 +121,26 @@ public class HelloController implements Initializable {
                 label.setAlignment(Pos.CENTER);
                 label.setId("CalendarEntry");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    int index;
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        if (entry != null) {
-                            System.out.println(entry.getTask());
-                        }
+                        initTaskPane();
+                        final double initialX = 33.0;
+                        final double initialY = 32.0;
+                        if (entry == null)
+                            return;
+                        var tasks = entry.getTask();
+                        this.index = 0;
+                        tasks.forEach(task -> {
+                            RadioButton taskRadioButton = new RadioButton();
+                            taskRadioButton.setText(task);
+                            taskRadioButton.setMnemonicParsing(false);
+                            taskRadioButton.setLayoutX(initialX);
+                            taskRadioButton.setLayoutY(initialY *
+                                                       (this.index + 1));
+                            taskPane.getChildren().add(taskRadioButton);
+                            ++this.index;
+                        });
                     }
                 });
                 label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +
