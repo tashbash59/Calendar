@@ -36,10 +36,10 @@ public class HelloController implements Initializable {
 
     private CalendarModel calendarModel;
 
-    // private CalendarData calendarData = CalendarData.fromPath(
-    //     System.getProperty("user.dir") +
-    //     "/src/main/resources/com/example/mierda/calendarData.json");
-    private CalendarData calendarData = CalendarData.getDefaultData();
+    private CalendarData calendarData = CalendarData.fromFilepath(
+        System.getProperty("user.dir") +
+        "/src/main/resources/com/example/mierda/calendarData.json");
+    // private CalendarData calendarData = CalendarData.getDefaultData();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,8 +52,6 @@ public class HelloController implements Initializable {
     }
 
     private void initCalendarComponent() {
-        this.calendarData.toJSONObect();
-        this.calendarData.save();
         var children = new ArrayList<>(this.calendarComponent.getChildren());
         for (javafx.scene.Node child : children) {
             String id = child.getId();
@@ -154,11 +152,13 @@ public class HelloController implements Initializable {
                     if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar) {
                         bar.setPrefWidth(bar.getWidth() + onePartBar);
                         calendarData.addMoney(-10);
+                        calendarData.save();
                         moneyLabel.setText(
                             Integer.toString(calendarData.getMoney()));
                     } else if (bar.getPrefWidth() < bar.getMaxWidth()) {
                         bar.setPrefWidth(bar.getMaxWidth());
                         calendarData.addMoney(-10);
+                        calendarData.save();
                         moneyLabel.setText(
                             Integer.toString(calendarData.getMoney()));
                     }

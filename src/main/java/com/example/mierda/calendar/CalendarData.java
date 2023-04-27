@@ -1,10 +1,12 @@
 package com.example.mierda.calendar;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +18,57 @@ public class CalendarData {
     private Integer money;
 
     private CalendarData(String filepath) { this.filepath = filepath; }
+
+    public static CalendarData fromFilepath(String filepath) {
+        CalendarData data = new CalendarData(filepath);
+        String content = null;
+        try {
+            content = new String(Files.readAllBytes(Paths.get(filepath)));
+        } catch (Exception e) {
+            return data;
+        }
+        JSONObject object = new JSONObject(content);
+        Object name = object.get("name");
+        if (name != null) {
+            if (name.getClass().equals(new String().getClass()))
+                data.name = (String)name;
+        }
+
+        Object money = object.get("money");
+        if (money != null) {
+            if (money.getClass().equals(Integer.valueOf(0).getClass()))
+                data.money = (Integer)money;
+        }
+
+        Object tasks = object.get("tasks");
+        if (!(tasks.getClass().getSimpleName().equals("JSONObject")))
+            return data;
+        JSONObject tasksJson = (JSONObject)tasks;
+        data.monthToTasks = new HashMap<>();
+        Iterator<String> taskMontsIterator = tasksJson.keys();
+        while (taskMontsIterator.hasNext()) {
+            String key = taskMontsIterator.next();
+            Vector<TaskLink> taskLinks = new Vector<>();
+            if (!tasksJson.get(key).getClass().getSimpleName().equals(
+                    "JSONArray"))
+                continue;
+            JSONArray taskLinkArray = (JSONArray)tasksJson.get(key);
+            Iterator<Object> taskLinkArrayIter = taskLinkArray.iterator();
+            while (taskLinkArrayIter.hasNext()) {
+                Object taskLinkArrayObj = taskLinkArrayIter.next();
+                if (!taskLinkArrayObj.getClass().getSimpleName().equals(
+                        "JSONObject"))
+                    continue;
+                TaskLink link =
+                    TaskLink.fromJSONObject((JSONObject)taskLinkArrayObj);
+                if (link != null)
+                    taskLinks.add(link);
+            }
+            data.monthToTasks.put(key, taskLinks);
+        }
+
+        return data;
+    };
 
     public static CalendarData getDefaultData() {
         CalendarData data = new CalendarData(
@@ -53,6 +106,8 @@ public class CalendarData {
         object.put("name", this.name);
         object.put("money", this.money);
         JSONObject tasks = new JSONObject();
+        if (this.monthToTasks == null)
+            return object;
         for (String key : this.monthToTasks.keySet()) {
             Vector<TaskLink> taskLinks = this.monthToTasks.get(key);
             JSONArray taskLinksJsonArray = new JSONArray();
@@ -62,8 +117,6 @@ public class CalendarData {
             tasks.put(key, taskLinksJsonArray);
         }
         object.put("tasks", tasks);
-
-        System.out.println("This is my object: " + object);
 
         return object;
     }
@@ -93,6 +146,26 @@ class TaskLink {
     public TaskLink(String day, Vector<String> tasks) {
         this.day = day;
         this.tasks = tasks;
+    }
+
+    public static TaskLink fromJSONObject(JSONObject object) {
+        if (object.keySet().size() != 1)
+            return null;
+        Object key = object.keys().next();
+        if (!key.getClass().getSimpleName().equals("String"))
+            return null;
+        Object value = object.get((String)key);
+        if (!value.getClass().getSimpleName().equals("JSONArray"))
+            return null;
+        Vector<String> tasks = new Vector<>();
+        Iterator<Object> tasksIterator = ((JSONArray)value).iterator();
+        while (tasksIterator.hasNext()) {
+            Object task = tasksIterator.next();
+            if (!key.getClass().getSimpleName().equals("String"))
+                continue;
+            tasks.add((String)task);
+        }
+        return new TaskLink((String)key, tasks);
     }
 
     public JSONObject toJSONObect() {
