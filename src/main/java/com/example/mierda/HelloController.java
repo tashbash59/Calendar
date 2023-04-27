@@ -37,13 +37,13 @@ public class HelloController implements Initializable {
     @FXML public Label moneyLabel;
     @FXML public AnchorPane gameAnchor;
     @FXML public AnchorPane taskPane;
+    @FXML public Label monthLabel;
 
     private CalendarModel calendarModel;
 
     private final CalendarData calendarData = CalendarData.fromFilepath(
         System.getProperty("user.dir") +
         "/src/main/resources/com/example/mierda/calendarData.json");
-    // private CalendarData calendarData = CalendarData.getDefaultData();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -76,19 +76,22 @@ public class HelloController implements Initializable {
 
         if (this.calendarModel == null)
             this.calendarModel = new CalendarModel();
-        this.calendarModel.generateRandomTasks();
+
+        this.monthLabel.setText(this.calendarModel.getMonthYearString());
         Vector<TaskLink> taskData = this.calendarData.getMonthTasks(
             this.calendarModel.getStartOfDisplayedMonth());
-        taskData.forEach(taskLink -> {
-            taskLink.getTasks().forEach(task -> {
-                try {
-                    this.calendarModel.addTask(
-                        Integer.parseInt(taskLink.getDay()), task);
-                } catch (Exception e) {
-                    System.out.println("Could not parse task day due to: " + e);
-                }
+        if (taskData != null)
+            taskData.forEach(taskLink -> {
+                taskLink.getTasks().forEach(task -> {
+                    try {
+                        this.calendarModel.addTask(
+                            Integer.parseInt(taskLink.getDay()), task);
+                    } catch (Exception e) {
+                        System.out.println("Could not parse task day due to: " +
+                                           e);
+                    }
+                });
             });
-        });
 
         final double[] xOffsets = {22.0,  60.0,  104.0, 146.0,
                                    191.0, 235.0, 279.0};
@@ -121,21 +124,23 @@ public class HelloController implements Initializable {
                 label.setId("CalendarEntry");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     int index;
+                    final double INITIAL_X = 33.0;
+                    final double INITIAL_Y = 32.0;
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         initTaskPane();
-                        final double initialX = 33.0;
-                        final double initialY = 32.0;
                         if (entry == null)
                             return;
                         var tasks = entry.getTask();
                         this.index = 0;
                         tasks.forEach(task -> {
+                            if (this.index > 4)
+                                return;
                             RadioButton taskRadioButton = new RadioButton();
                             taskRadioButton.setText(task);
                             taskRadioButton.setMnemonicParsing(false);
-                            taskRadioButton.setLayoutX(initialX);
-                            taskRadioButton.setLayoutY(initialY *
+                            taskRadioButton.setLayoutX(INITIAL_X);
+                            taskRadioButton.setLayoutY(INITIAL_Y *
                                                        (this.index + 1));
                             taskPane.getChildren().add(taskRadioButton);
                             ++this.index;
