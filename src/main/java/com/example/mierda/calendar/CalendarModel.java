@@ -66,7 +66,7 @@ public class CalendarModel {
     public void selectNextMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, 1);
         this.entriesOfDisplayedMonth = this.calculateEntries();
-    };
+    }
 
     public void selectPreviousMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, -1);

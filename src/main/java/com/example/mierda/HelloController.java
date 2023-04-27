@@ -7,7 +7,6 @@ import com.example.mierda.calendar.TaskLink;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -41,7 +40,7 @@ public class HelloController implements Initializable {
 
     private CalendarModel calendarModel;
 
-    private CalendarData calendarData = CalendarData.fromFilepath(
+    private final CalendarData calendarData = CalendarData.fromFilepath(
         System.getProperty("user.dir") +
         "/src/main/resources/com/example/mierda/calendarData.json");
     // private CalendarData calendarData = CalendarData.getDefaultData();
@@ -86,7 +85,7 @@ public class HelloController implements Initializable {
                     this.calendarModel.addTask(
                         Integer.parseInt(taskLink.getDay()), task);
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.out.println("Could not parse task day due to: " + e);
                 }
             });
         });

@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CalendarData {
-    private String filepath;
+    private final String filepath;
     private String name;
     private HashMap<String, Vector<TaskLink>> monthToTasks;
     private Integer money;
@@ -23,7 +23,7 @@ public class CalendarData {
 
     public static CalendarData fromFilepath(String filepath) {
         CalendarData data = new CalendarData(filepath);
-        String content = null;
+        String content;
         try {
             content = new String(Files.readAllBytes(Paths.get(filepath)));
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class CalendarData {
         JSONObject object = new JSONObject(content);
         Object name = object.get("name");
         if (name != null) {
-            if (name.getClass().equals(new String().getClass()))
+            if (name.getClass().getSimpleName().equals("String"))
                 data.name = (String)name;
         }
 
@@ -70,7 +70,7 @@ public class CalendarData {
         }
 
         return data;
-    };
+    }
 
     public static CalendarData getDefaultData() {
         CalendarData data = new CalendarData(
@@ -113,8 +113,8 @@ public class CalendarData {
         for (String key : this.monthToTasks.keySet()) {
             Vector<TaskLink> taskLinks = this.monthToTasks.get(key);
             JSONArray taskLinksJsonArray = new JSONArray();
-            taskLinks.stream().forEach(taskLink -> {
-                taskLinksJsonArray.put(taskLink.toJSONObect());
+            taskLinks.forEach(taskLink -> {
+                taskLinksJsonArray.put(taskLink.toJSONObject());
             });
             tasks.put(key, taskLinksJsonArray);
         }
@@ -132,7 +132,7 @@ public class CalendarData {
 
             writer.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Could not save the file due to: " + e);
         }
     }
 
@@ -146,7 +146,7 @@ public class CalendarData {
                 return null;
             return this.monthToTasks.get(key);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Could not parse the month key due to: " + e);
         }
         return null;
     }

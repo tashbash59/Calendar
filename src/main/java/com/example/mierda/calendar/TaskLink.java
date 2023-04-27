@@ -6,8 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class TaskLink {
-    String day;
-    Vector<String> tasks;
+    final String day;
+    final Vector<String> tasks;
 
     public TaskLink(String day, Vector<String> tasks) {
         this.day = day;
@@ -17,10 +17,10 @@ public class TaskLink {
     public static TaskLink fromJSONObject(JSONObject object) {
         if (object.keySet().size() != 1)
             return null;
-        Object key = object.keys().next();
+        String key = object.keys().next();
         if (!key.getClass().getSimpleName().equals("String"))
             return null;
-        Object value = object.get((String)key);
+        Object value = object.get(key);
         if (!value.getClass().getSimpleName().equals("JSONArray"))
             return null;
         Vector<String> tasks = new Vector<>();
@@ -31,10 +31,10 @@ public class TaskLink {
                 continue;
             tasks.add((String)task);
         }
-        return new TaskLink((String)key, tasks);
+        return new TaskLink(key, tasks);
     }
 
-    public JSONObject toJSONObect() {
+    public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         JSONArray jsonTasks = new JSONArray(this.tasks.toArray());
         result.put(this.day, jsonTasks);
