@@ -1,12 +1,15 @@
 package com.example.mierda;
 
+import com.example.mierda.calendar.CalendarData;
 import com.example.mierda.calendar.CalendarEntry;
 import com.example.mierda.calendar.CalendarModel;
+import com.example.mierda.calendar.TaskLink;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.Vector;
 import javafx.animation.Animation;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,6 +18,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -32,19 +36,31 @@ public class HelloController implements Initializable {
     @FXML public AnchorPane happyBar;
     @FXML public Label moneyLabel;
     @FXML public AnchorPane gameAnchor;
+    @FXML public AnchorPane taskPane;
+    @FXML public Label monthLabel;
 
     private CalendarModel calendarModel;
 
-    static Integer money = 1000;
+    private final CalendarData calendarData = CalendarData.fromFilepath(
+        System.getProperty("user.dir") +
+        "/src/main/resources/com/example/mierda/calendarData.json");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        moneyLabel.setText(money.toString());
+        moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
         initAnimation();
         initCalendarComponent();
+        initTaskPane();
         eating(eatBar, eat);
         eating(healthBar, health);
         eating(happyBar, happy);
+    }
+
+    private void initTaskPane() {
+        var children = new ArrayList<>(this.taskPane.getChildren());
+        for (javafx.scene.Node child : children) {
+            this.taskPane.getChildren().remove(child);
+        }
     }
 
     private void initCalendarComponent() {
@@ -60,11 +76,28 @@ public class HelloController implements Initializable {
 
         if (this.calendarModel == null)
             this.calendarModel = new CalendarModel();
-        this.calendarModel.generateRandomTasks();
+
+        this.monthLabel.setText(this.calendarModel.getMonthYearString());
+        Vector<TaskLink> taskData = this.calendarData.getMonthTasks(
+            this.calendarModel.getStartOfDisplayedMonth());
+        if (taskData != null)
+            taskData.forEach(taskLink -> {
+                taskLink.getTasks().forEach(task -> {
+                    try {
+                        this.calendarModel.addTask(
+                            Integer.parseInt(taskLink.getDay()), task);
+                    } catch (Exception e) {
+                        System.out.println("Could not parse task day due to: " +
+                                           e);
+                    }
+                });
+            });
+
         final double[] xOffsets = {22.0,  60.0,  104.0, 146.0,
                                    191.0, 235.0, 279.0};
         final double yCellWidth = 14.0;
         final double yBaseOffset = 10.0;
+
         for (int row = 0; row < this.calendarModel.getNumberOfRows(); ++row) {
             for (int column = 0;
                  column < this.calendarModel.getNumberOfColumns(); ++column) {
@@ -90,11 +123,28 @@ public class HelloController implements Initializable {
                 label.setAlignment(Pos.CENTER);
                 label.setId("CalendarEntry");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    int index;
+                    final double INITIAL_X = 33.0;
+                    final double INITIAL_Y = 32.0;
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        if (entry != null) {
-                            System.out.println(entry.getTask());
-                        }
+                        initTaskPane();
+                        if (entry == null)
+                            return;
+                        var tasks = entry.getTask();
+                        this.index = 0;
+                        tasks.forEach(task -> {
+                            if (this.index > 4)
+                                return;
+                            RadioButton taskRadioButton = new RadioButton();
+                            taskRadioButton.setText(task);
+                            taskRadioButton.setMnemonicParsing(false);
+                            taskRadioButton.setLayoutX(INITIAL_X);
+                            taskRadioButton.setLayoutY(INITIAL_Y *
+                                                       (this.index + 1));
+                            taskPane.getChildren().add(taskRadioButton);
+                            ++this.index;
+                        });
                     }
                 });
                 label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +
@@ -113,7 +163,6 @@ public class HelloController implements Initializable {
             new File(currentDirectory + "/src/main/images/default.png");
         Image MIERDA = new Image(defaultMierda.toURI().toString());
 
-
         final int COLUMNS = 3;
         final int COUNT = 9;
         final int OFFSET_X = 1;
@@ -130,13 +179,13 @@ public class HelloController implements Initializable {
                                 COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
-        gameAnchor.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                mierdaAnimation.setImage(MIERDA);
-            }
-        });
-
+        gameAnchor.addEventFilter(
+            MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    mierdaAnimation.setImage(MIERDA);
+                }
+            });
     }
 
     private void eating(AnchorPane bar, Button button) {
@@ -147,12 +196,16 @@ public class HelloController implements Initializable {
                 public void handle(MouseEvent mouseEvent) {
                     if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar) {
                         bar.setPrefWidth(bar.getWidth() + onePartBar);
-                        money -= 10;
-                        moneyLabel.setText(money.toString());
+                        calendarData.addMoney(-10);
+                        calendarData.save();
+                        moneyLabel.setText(
+                            Integer.toString(calendarData.getMoney()));
                     } else if (bar.getPrefWidth() < bar.getMaxWidth()) {
                         bar.setPrefWidth(bar.getMaxWidth());
-                        money -= 10;
-                        moneyLabel.setText(money.toString());
+                        calendarData.addMoney(-10);
+                        calendarData.save();
+                        moneyLabel.setText(
+                            Integer.toString(calendarData.getMoney()));
                     }
                 }
             });
