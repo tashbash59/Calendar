@@ -118,7 +118,9 @@ public class HelloController implements Initializable {
                         : "";
                 if (isToday)
                     label.setMinWidth(yCellWidth * 1.75);
-                label.setLayoutX(xOffsets[column]);
+                label.setLayoutX(
+                    (isToday) ? (xOffsets[column] - yCellWidth / 1.75 / 2)
+                              : xOffsets[column]);
                 label.setLayoutY((yCellWidth + yBaseOffset) * (row + 2));
                 label.setAlignment(Pos.CENTER);
                 label.setId("CalendarEntry");
