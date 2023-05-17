@@ -1,8 +1,5 @@
 {
-    "money": 9230,
-    "health": 0,
-    "eat": 0,
-    "happy": 0,
+    "money": 9310,
     "name": "MyMierda",
     "tasks": {
         "05.2023": [{"22": ["Hello world"]}],

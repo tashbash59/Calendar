@@ -22,22 +22,25 @@
          <children>
             <TextField layoutX="33.0" layoutY="195.0" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: #D9D9D9;" />
             <Button layoutX="247.0" layoutY="195.0" mnemonicParsing="false" style="-fx-background-color: #D9D9D9;" text="+" />
-            <RadioButton layoutX="33.0" layoutY="32.0" mnemonicParsing="false" text="первая задача" />
+            <AnchorPane fx:id="taskPane" prefHeight="26.0" prefWidth="310.0" style="">
+                <RadioButton layoutX="33.0" layoutY="32.0" mnemonicParsing="false" text="первая задача" />
+            </AnchorPane>
          </children></AnchorPane>
       <Label layoutX="58.0" layoutY="70.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Календарь" />
+      <Label fx:id="monthLabel" layoutX="270.0" layoutY="70.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Месяц" />
       <Label layoutX="58.0" layoutY="320.0" prefHeight="35.0" prefWidth="277.0" style="-fx-font-size: 24; -fx-font-weight: 700;" text="Задачи" />
       <AnchorPane fx:id="gameAnchor" layoutX="457.0" layoutY="112.0" prefHeight="498.0" prefWidth="488.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
          <children>
             <AnchorPane layoutX="27.0" layoutY="23.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F2F2F2;">
                <children>
-                  <AnchorPane fx:id="eatBar" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="295.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #FF976B;">
+                  <AnchorPane fx:id="healthBar" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="295.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #FF976B;">
                      <children>
                         <Label layoutX="37.0" layoutY="2.0" prefHeight="18.0" prefWidth="64.0" text="здоровье" textFill="WHITE" />
                      </children></AnchorPane>
                </children></AnchorPane>
             <AnchorPane layoutX="27.0" layoutY="57.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F2F2F2;">
                <children>
-                  <AnchorPane fx:id="healthBar" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="258.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #84C7BF;">
+                  <AnchorPane fx:id="eatBar" layoutY="2.0" maxWidth="434.0" prefHeight="20.0" prefWidth="258.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #84C7BF;">
                      <children>
                         <Label layoutX="38.0" layoutY="3.0" prefHeight="18.0" prefWidth="64.0" text="голод" textFill="WHITE" />
                      </children></AnchorPane>

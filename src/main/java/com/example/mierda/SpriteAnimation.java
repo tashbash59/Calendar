@@ -8,15 +8,16 @@ import javafx.util.Duration;
 
 public class SpriteAnimation extends Transition {
 
-    private final ImageView imageView;
-    private final int count;
-    private final int columns;
-    private final int offsetX;
-    private final int offsetY;
-    private final int width;
-    private final int height;
+    private ImageView imageView;
+    private int count;
+    private int columns;
+    private int offsetX;
+    private int offsetY;
+    private int width;
+    private int height;
 
     private int lastIndex;
+
 
     public SpriteAnimation(
             ImageView imageView,
@@ -35,6 +36,16 @@ public class SpriteAnimation extends Transition {
         setInterpolator(Interpolator.LINEAR);
     }
 
+    protected void setColumns(int c) {
+        this.columns = c;
+    }
+    protected void setCount(int c) {
+        this.count = c;
+    }
+    protected int getLastIndex() {
+        return lastIndex;
+    }
+
     protected void interpolate(double k) {
         final int index = Math.min((int) Math.floor(k * count), count - 1);
         if (index != lastIndex) {
@@ -42,6 +53,8 @@ public class SpriteAnimation extends Transition {
             final int y = (index / columns) * height + offsetY;
             imageView.setViewport(new Rectangle2D(x, y, width, height));
             lastIndex = index;
+        } else {
+            return;
         }
     }
 }

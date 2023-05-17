@@ -11,6 +11,8 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,6 +42,7 @@ public class HelloController implements Initializable {
     @FXML public Label monthLabel;
 
     private CalendarModel calendarModel;
+    final double onePartBar = 43.4;
 
     private final CalendarData calendarData = CalendarData.fromFilepath(
         System.getProperty("user.dir") +
@@ -153,29 +156,51 @@ public class HelloController implements Initializable {
             }
         }
     }
-    public void initAnimation() {
+    private void buttonAnimations(Button button,Image firstImage,int timer,Image secondImage,AnchorPane bar) {
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar && calendarData.getMoney() > 0) {
+                    mierdaAnimation.setImage(firstImage);
+                    PauseTransition pause = new PauseTransition(Duration.millis(timer));
+                    pause.setOnFinished(event1 ->
+                            mierdaAnimation.setImage(secondImage)
+                    );
+                    pause.play();
+            }
+            }
+        });
+    }
+
+    private void initAnimation() {
 
         String currentDirectory = System.getProperty("user.dir");
-        File animationFile =
+        File sleepFile =
             new File(currentDirectory + "/src/main/images/sleep.png");
-        Image ANIMATION_IMAGE = new Image(animationFile.toURI().toString());
-        File defaultMierda =
+        Image sleep = new Image(sleepFile.toURI().toString());
+        File defaultFile =
             new File(currentDirectory + "/src/main/images/default.png");
-        Image MIERDA = new Image(defaultMierda.toURI().toString());
+        Image defaultM = new Image(defaultFile.toURI().toString());
+        File eatingFile =
+                new File(currentDirectory + "/src/main/images/eat.png");
+        Image eating = new Image(eatingFile.toURI().toString());
+        File regenFile =
+                new File(currentDirectory + "/src/main/images/regen1.png");
+        Image regen = new Image(regenFile.toURI().toString());
 
-        final int COLUMNS = 3;
-        final int COUNT = 9;
+        final int COLUMNS = 6;
+        final int COUNT = 24;
         final int OFFSET_X = 1;
         final int OFFSET_Y = 1;
         final int WIDTH = 882;
         final int HEIGHT = 892;
-        final int timer = 2000;
+        final int TIMER = 1500;
 
-        mierdaAnimation.setImage(ANIMATION_IMAGE);
+        mierdaAnimation.setImage(sleep);
         mierdaAnimation.setViewport(
             new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
         final Animation animation =
-            new SpriteAnimation(mierdaAnimation, Duration.millis(timer), COUNT,
+            new SpriteAnimation(mierdaAnimation, Duration.millis(TIMER), COUNT,
                                 COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
@@ -183,24 +208,25 @@ public class HelloController implements Initializable {
             MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    mierdaAnimation.setImage(MIERDA);
+                    mierdaAnimation.setImage(defaultM);
                 }
             });
+        buttonAnimations(eat,eating,TIMER,defaultM,eatBar);
+        buttonAnimations(health,regen,TIMER,defaultM,healthBar);
     }
 
     private void eating(AnchorPane bar, Button button) {
-        final double onePartBar = 43.4;
         button.addEventHandler(
             MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar) {
+                    if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar && calendarData.getMoney() > 0) {
                         bar.setPrefWidth(bar.getWidth() + onePartBar);
                         calendarData.addMoney(-10);
                         calendarData.save();
                         moneyLabel.setText(
                             Integer.toString(calendarData.getMoney()));
-                    } else if (bar.getPrefWidth() < bar.getMaxWidth()) {
+                    } else if (bar.getPrefWidth() < bar.getMaxWidth() && calendarData.getMoney() > 0) {
                         bar.setPrefWidth(bar.getMaxWidth());
                         calendarData.addMoney(-10);
                         calendarData.save();
