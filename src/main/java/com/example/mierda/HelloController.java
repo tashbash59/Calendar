@@ -41,6 +41,7 @@ public class HelloController implements Initializable {
     @FXML public AnchorPane taskPane;
     @FXML public Label monthLabel;
 
+    private TaskpaneController taskpaneController;
     private CalendarModel calendarModel;
     final double onePartBar = 43.4;
 
@@ -51,19 +52,12 @@ public class HelloController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
+        this.taskpaneController = new TaskpaneController(this.taskPane);
         initAnimation();
         initCalendarComponent();
-        initTaskPane();
         eating(eatBar, eat);
         eating(healthBar, health);
         eating(happyBar, happy);
-    }
-
-    private void initTaskPane() {
-        var children = new ArrayList<>(this.taskPane.getChildren());
-        for (javafx.scene.Node child : children) {
-            this.taskPane.getChildren().remove(child);
-        }
     }
 
     private void initCalendarComponent() {
@@ -119,8 +113,10 @@ public class HelloController implements Initializable {
                     isToday
                         ? "-fx-background-color: #caef6d; -fx-background-radius: 30px 15px;"
                         : "";
-                if (isToday)
+                if (isToday) {
                     label.setMinWidth(yCellWidth * 1.75);
+                    this.taskpaneController.update(entry);
+                }
                 label.setLayoutX(
                     (isToday) ? (xOffsets[column] - yCellWidth / 1.75 / 2)
                               : xOffsets[column]);
@@ -128,28 +124,9 @@ public class HelloController implements Initializable {
                 label.setAlignment(Pos.CENTER);
                 label.setId("CalendarEntry");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    int index;
-                    final double INITIAL_X = 33.0;
-                    final double INITIAL_Y = 32.0;
                     @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        initTaskPane();
-                        if (entry == null)
-                            return;
-                        var tasks = entry.getTask();
-                        this.index = 0;
-                        tasks.forEach(task -> {
-                            if (this.index > 4)
-                                return;
-                            RadioButton taskRadioButton = new RadioButton();
-                            taskRadioButton.setText(task);
-                            taskRadioButton.setMnemonicParsing(false);
-                            taskRadioButton.setLayoutX(INITIAL_X);
-                            taskRadioButton.setLayoutY(INITIAL_Y *
-                                                       (this.index + 1));
-                            taskPane.getChildren().add(taskRadioButton);
-                            ++this.index;
-                        });
+                    public void handle(MouseEvent e) {
+                        taskpaneController.update(entry);
                     }
                 });
                 label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +

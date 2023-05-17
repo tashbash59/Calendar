@@ -16,7 +16,6 @@ import org.json.JSONObject;
 public class CalendarData {
     private final String filepath;
     private String name;
-    private HashMap<String, Vector<TaskLink>> monthToTasks;
     private Integer money;
 
     private CalendarData(String filepath) { this.filepath = filepath; }
@@ -40,33 +39,6 @@ public class CalendarData {
         if (money != null) {
             if (money.getClass().equals(Integer.valueOf(0).getClass()))
                 data.money = (Integer)money;
-        }
-
-        Object tasks = object.get("tasks");
-        if (!(tasks.getClass().getSimpleName().equals("JSONObject")))
-            return data;
-        JSONObject tasksJson = (JSONObject)tasks;
-        data.monthToTasks = new HashMap<>();
-        Iterator<String> taskMontsIterator = tasksJson.keys();
-        while (taskMontsIterator.hasNext()) {
-            String key = taskMontsIterator.next();
-            Vector<TaskLink> taskLinks = new Vector<>();
-            if (!tasksJson.get(key).getClass().getSimpleName().equals(
-                    "JSONArray"))
-                continue;
-            JSONArray taskLinkArray = (JSONArray)tasksJson.get(key);
-            Iterator<Object> taskLinkArrayIter = taskLinkArray.iterator();
-            while (taskLinkArrayIter.hasNext()) {
-                Object taskLinkArrayObj = taskLinkArrayIter.next();
-                if (!taskLinkArrayObj.getClass().getSimpleName().equals(
-                        "JSONObject"))
-                    continue;
-                TaskLink link =
-                    TaskLink.fromJSONObject((JSONObject)taskLinkArrayObj);
-                if (link != null)
-                    taskLinks.add(link);
-            }
-            data.monthToTasks.put(key, taskLinks);
         }
 
         return data;
@@ -98,7 +70,6 @@ public class CalendarData {
         mayTasks.add(link4);
         monthToTasks.put("04.2023", aprilTasks);
         monthToTasks.put("05.2023", mayTasks);
-        data.monthToTasks = monthToTasks;
 
         return data;
     }
