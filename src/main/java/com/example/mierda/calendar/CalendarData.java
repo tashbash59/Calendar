@@ -107,19 +107,6 @@ public class CalendarData {
         JSONObject object = new JSONObject();
         object.put("name", this.name);
         object.put("money", this.money);
-        JSONObject tasks = new JSONObject();
-        if (this.monthToTasks == null)
-            return object;
-        for (String key : this.monthToTasks.keySet()) {
-            Vector<TaskLink> taskLinks = this.monthToTasks.get(key);
-            JSONArray taskLinksJsonArray = new JSONArray();
-            taskLinks.forEach(taskLink -> {
-                taskLinksJsonArray.put(taskLink.toJSONObject());
-            });
-            tasks.put(key, taskLinksJsonArray);
-        }
-        object.put("tasks", tasks);
-
         return object;
     }
 
@@ -137,18 +124,29 @@ public class CalendarData {
     }
 
     public Vector<TaskLink> getMonthTasks(Calendar month) {
-        if (this.monthToTasks == null)
-            return null;
+        SimpleDateFormat formatter = new SimpleDateFormat("MMyyyy");
+        String filename = "t" + formatter.format(month.getTime()) + ".json";
+        String tasksFilepath = System.getProperty("user.dir") +
+                               "/src/main/resources/com/example/mierda/" +
+                               filename;
+        String content;
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("MM.yyyy");
-            String key = formatter.format(month.getTime());
-            if (this.monthToTasks.get(key) == null)
-                return null;
-            return this.monthToTasks.get(key);
+            content = new String(Files.readAllBytes(Paths.get(tasksFilepath)));
         } catch (Exception e) {
-            System.out.println("Could not parse the month key due to: " + e);
+            return null;
         }
-        return null;
+        JSONArray root = new JSONArray(content);
+        Iterator<Object> monthsTasksIterator = root.iterator();
+        Vector<TaskLink> taskLinks = new Vector<>();
+        while (monthsTasksIterator.hasNext()) {
+            Object tasks = monthsTasksIterator.next();
+            if (!tasks.getClass().getSimpleName().equals("JSONObject"))
+                continue;
+            TaskLink link = TaskLink.fromJSONObject((JSONObject)tasks);
+            if (link != null)
+                taskLinks.add(link);
+        }
+        return taskLinks;
     }
 
     public int getMoney() { return this.money; }
