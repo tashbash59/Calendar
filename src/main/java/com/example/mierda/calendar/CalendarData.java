@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 public class CalendarData {
     private final String filepath;
-    private String name;
     private Integer money;
 
     private CalendarData(String filepath) { this.filepath = filepath; }
@@ -29,11 +28,6 @@ public class CalendarData {
             return data;
         }
         JSONObject object = new JSONObject(content);
-        Object name = object.get("name");
-        if (name != null) {
-            if (name.getClass().getSimpleName().equals("String"))
-                data.name = (String)name;
-        }
 
         Object money = object.get("money");
         if (money != null) {
@@ -49,7 +43,6 @@ public class CalendarData {
             System.getProperty("user.dir") +
             "/src/main/resources/com/example/mierda/calendarData_default.json");
         data.money = 1000;
-        data.name = "MyMierda";
         HashMap<String, Vector<TaskLink>> monthToTasks = new HashMap<>();
         TaskLink link1 = new TaskLink(
             "21",
@@ -76,7 +69,6 @@ public class CalendarData {
 
     public JSONObject toJSONObect() {
         JSONObject object = new JSONObject();
-        object.put("name", this.name);
         object.put("money", this.money);
         return object;
     }
