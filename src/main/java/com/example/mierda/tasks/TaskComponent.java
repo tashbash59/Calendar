@@ -22,6 +22,8 @@ public class TaskComponent extends VBox {
 
         taskName.setStyle(style);
         taskName.setMinWidth(280);
+        taskName.setMaxWidth(280);
+        taskName.setWrapText(true);
         this.getChildren().add(taskName);
         taskName.setSelected(task.getIsCompleted());
         if (taskName.isSelected())

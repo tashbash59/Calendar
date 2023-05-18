@@ -64,6 +64,11 @@ public class CalendarModel {
         this.saveJSON();
     }
 
+    public void removeEvent(CalendarEvent event) {
+        this.events.remove(event);
+        this.saveJSON();
+    }
+
     public void replaceEvent(CalendarEvent prevEvent, CalendarEvent currEvent) {
         this.events.remove(prevEvent);
         this.events.add(currEvent);

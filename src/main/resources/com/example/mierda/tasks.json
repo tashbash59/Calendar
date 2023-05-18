@@ -1,6 +1,6 @@
 [
     {
-        "name": "Первая задача",
+        "name": "Задача на так много букаф что прям переполняет",
         "description": "Первая задача",
         "priority": 0,
         "isCompleted": false
@@ -15,54 +15,6 @@
         "name": "Неприоритетная задача",
         "description": "Неприоритетная задача",
         "priority": 2,
-        "isCompleted": false
-    },
-    {
-        "name": "aa",
-        "description": "aa",
-        "priority": 2,
-        "isCompleted": true
-    },
-    {
-        "name": "aa",
-        "description": "aa",
-        "priority": 2,
-        "isCompleted": false
-    },
-    {
-        "name": "aa",
-        "description": "aa",
-        "priority": 2,
-        "isCompleted": false
-    },
-    {
-        "name": "aa",
-        "description": "aa",
-        "priority": 2,
-        "isCompleted": false
-    },
-    {
-        "name": "aa",
-        "description": "aa",
-        "priority": 2,
-        "isCompleted": false
-    },
-    {
-        "name": "первая",
-        "description": "первая",
-        "priority": 0,
-        "isCompleted": false
-    },
-    {
-        "name": "dwaawdawd",
-        "description": "dwaawdawd",
-        "priority": 0,
-        "isCompleted": false
-    },
-    {
-        "name": "d",
-        "description": "d",
-        "priority": 0,
         "isCompleted": false
     }
 ]

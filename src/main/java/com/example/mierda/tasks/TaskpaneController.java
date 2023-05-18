@@ -45,12 +45,9 @@ public class TaskpaneController implements TaskObserver {
     public void update(ArrayList<Task> tasks) {
         clearTaskPane();
         tasks.forEach(task -> {
-            Region region = new Region();
-            HBox.setHgrow(region, Priority.ALWAYS);
             TaskComponent taskComponent =
                 new TaskComponent(task, this.taskModel);
-            HBox hbox = new HBox(region, taskComponent);
-            this.taskContainer.getChildren().add(hbox);
+            this.taskContainer.getChildren().add(taskComponent);
         });
     }
 }

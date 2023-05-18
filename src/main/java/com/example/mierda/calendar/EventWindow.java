@@ -21,7 +21,7 @@ public class EventWindow {
     private VBox displayWindowContainer;
     private CalendarModel calendarModel;
     private Button saveButton;
-    private DatePicker datePicker;
+    private Button deleteButton;
     private Calendar eventDate;
     private TextField eventNameTextField;
     private TextField eventDescriptionTextField;
@@ -49,6 +49,7 @@ public class EventWindow {
         this.eventDescriptionTextField =
             this.addLabeledTextField("Описание:", "");
         this.saveButton = this.addSaveButton();
+        this.deleteButton = this.addDeleteButton();
         dialog.setResizable(false);
         dialog.setScene(dialogScene);
         this.swapWindows();
@@ -62,6 +63,7 @@ public class EventWindow {
             this.dialogScene.setRoot(this.displayWindowContainer);
         } else {
             this.generateEventCreationScene();
+            this.deleteButton.setVisible(this.attachedEvent != null);
             this.dialogScene.setRoot(this.container);
         }
     }
@@ -129,6 +131,14 @@ public class EventWindow {
         }
     }
 
+    private void removeEvent() {
+        System.out.println(this.attachedEvent);
+        this.calendarModel.removeEvent(this.attachedEvent);
+        this.attachedEvents.remove(this.attachedEvent);
+        System.out.print(this.attachedEvents);
+        this.generateEventCreationScene();
+    }
+
     private Button addSaveButton() {
         Button saveButton = new Button("Сохранить");
         this.container.getChildren().add(saveButton);
@@ -141,5 +151,19 @@ public class EventWindow {
             }
         });
         return saveButton;
+    }
+
+    private Button addDeleteButton() {
+        Button deleteButton = new Button("Удалить");
+        this.container.getChildren().add(deleteButton);
+        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                removeEvent();
+                clearCreationScene();
+                swapWindows();
+            }
+        });
+        return deleteButton;
     }
 }
