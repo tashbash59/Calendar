@@ -4,6 +4,9 @@ import com.example.mierda.calendar.CalendarData;
 import com.example.mierda.calendar.CalendarEntry;
 import com.example.mierda.calendar.CalendarModel;
 import com.example.mierda.calendar.TaskLink;
+import com.example.mierda.tasks.TaskCreationWindow;
+import com.example.mierda.tasks.TaskModel;
+import com.example.mierda.tasks.TaskpaneController;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javafx.animation.Animation;
+import javafx.animation.PauseTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +24,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -38,8 +45,12 @@ public class HelloController implements Initializable {
     @FXML public AnchorPane gameAnchor;
     @FXML public AnchorPane taskPane;
     @FXML public Label monthLabel;
+    @FXML private Button createTaskButton;
+    @FXML private TextField createTaskText;
 
+    private TaskModel taskModel;
     private CalendarModel calendarModel;
+    final double onePartBar = 43.4;
 
     private final CalendarData calendarData = CalendarData.fromFilepath(
         System.getProperty("user.dir") +
@@ -48,19 +59,30 @@ public class HelloController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
+        this.taskModel = new TaskModel(this.taskPane);
         initAnimation();
         initCalendarComponent();
-        initTaskPane();
+        initCreateTaskButton();
         eating(eatBar, eat);
         eating(healthBar, health);
         eating(happyBar, happy);
     }
 
-    private void initTaskPane() {
-        var children = new ArrayList<>(this.taskPane.getChildren());
-        for (javafx.scene.Node child : children) {
-            this.taskPane.getChildren().remove(child);
-        }
+    private void initCreateTaskButton() {
+        this.createTaskButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                String text = createTaskText.getText();
+                if (text != null)
+                    new TaskCreationWindow(
+                        createTaskButton.getScene().getWindow(), taskModel,
+                        text);
+                else {
+                    new TaskCreationWindow(
+                        createTaskButton.getScene().getWindow(), taskModel);
+                }
+            }
+        });
     }
 
     private void initCalendarComponent() {
@@ -116,8 +138,9 @@ public class HelloController implements Initializable {
                     isToday
                         ? "-fx-background-color: #caef6d; -fx-background-radius: 30px 15px;"
                         : "";
-                if (isToday)
+                if (isToday) {
                     label.setMinWidth(yCellWidth * 1.75);
+                }
                 label.setLayoutX(
                     (isToday) ? (xOffsets[column] - yCellWidth / 1.75 / 2)
                               : xOffsets[column]);
@@ -125,29 +148,8 @@ public class HelloController implements Initializable {
                 label.setAlignment(Pos.CENTER);
                 label.setId("CalendarEntry");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    int index;
-                    final double INITIAL_X = 33.0;
-                    final double INITIAL_Y = 32.0;
                     @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        initTaskPane();
-                        if (entry == null)
-                            return;
-                        var tasks = entry.getTask();
-                        this.index = 0;
-                        tasks.forEach(task -> {
-                            if (this.index > 4)
-                                return;
-                            RadioButton taskRadioButton = new RadioButton();
-                            taskRadioButton.setText(task);
-                            taskRadioButton.setMnemonicParsing(false);
-                            taskRadioButton.setLayoutX(INITIAL_X);
-                            taskRadioButton.setLayoutY(INITIAL_Y *
-                                                       (this.index + 1));
-                            taskPane.getChildren().add(taskRadioButton);
-                            ++this.index;
-                        });
-                    }
+                    public void handle(MouseEvent e) {}
                 });
                 label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +
                                selectedStyle);
@@ -155,29 +157,53 @@ public class HelloController implements Initializable {
             }
         }
     }
-    public void initAnimation() {
+    private void buttonAnimations(Button button, Image firstImage, int timer,
+                                  Image secondImage, AnchorPane bar) {
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar &&
+                    calendarData.getMoney() > 0) {
+                    mierdaAnimation.setImage(firstImage);
+                    PauseTransition pause =
+                        new PauseTransition(Duration.millis(timer));
+                    pause.setOnFinished(
+                        event1 -> mierdaAnimation.setImage(secondImage));
+                    pause.play();
+                }
+            }
+        });
+    }
+
+    private void initAnimation() {
 
         String currentDirectory = System.getProperty("user.dir");
-        File animationFile =
+        File sleepFile =
             new File(currentDirectory + "/src/main/images/sleep.png");
-        Image ANIMATION_IMAGE = new Image(animationFile.toURI().toString());
-        File defaultMierda =
+        Image sleep = new Image(sleepFile.toURI().toString());
+        File defaultFile =
             new File(currentDirectory + "/src/main/images/default.png");
-        Image MIERDA = new Image(defaultMierda.toURI().toString());
+        Image defaultM = new Image(defaultFile.toURI().toString());
+        File eatingFile =
+            new File(currentDirectory + "/src/main/images/eat.png");
+        Image eating = new Image(eatingFile.toURI().toString());
+        File regenFile =
+            new File(currentDirectory + "/src/main/images/regen1.png");
+        Image regen = new Image(regenFile.toURI().toString());
 
-        final int COLUMNS = 3;
-        final int COUNT = 9;
+        final int COLUMNS = 6;
+        final int COUNT = 24;
         final int OFFSET_X = 1;
         final int OFFSET_Y = 1;
         final int WIDTH = 882;
         final int HEIGHT = 892;
-        final int timer = 2000;
+        final int TIMER = 1500;
 
-        mierdaAnimation.setImage(ANIMATION_IMAGE);
+        mierdaAnimation.setImage(sleep);
         mierdaAnimation.setViewport(
             new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
         final Animation animation =
-            new SpriteAnimation(mierdaAnimation, Duration.millis(timer), COUNT,
+            new SpriteAnimation(mierdaAnimation, Duration.millis(TIMER), COUNT,
                                 COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
@@ -185,24 +211,27 @@ public class HelloController implements Initializable {
             MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    mierdaAnimation.setImage(MIERDA);
+                    mierdaAnimation.setImage(defaultM);
                 }
             });
+        buttonAnimations(eat, eating, TIMER, defaultM, eatBar);
+        buttonAnimations(health, regen, TIMER, defaultM, healthBar);
     }
 
     private void eating(AnchorPane bar, Button button) {
-        final double onePartBar = 43.4;
         button.addEventHandler(
             MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar) {
+                    if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar &&
+                        calendarData.getMoney() > 0) {
                         bar.setPrefWidth(bar.getWidth() + onePartBar);
                         calendarData.addMoney(-10);
                         calendarData.save();
                         moneyLabel.setText(
                             Integer.toString(calendarData.getMoney()));
-                    } else if (bar.getPrefWidth() < bar.getMaxWidth()) {
+                    } else if (bar.getPrefWidth() < bar.getMaxWidth() &&
+                               calendarData.getMoney() > 0) {
                         bar.setPrefWidth(bar.getMaxWidth());
                         calendarData.addMoney(-10);
                         calendarData.save();

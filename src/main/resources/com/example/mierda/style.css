@@ -1,0 +1,16 @@
+.task-component.radio-button {
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+}
+
+.task-component.radio-button .text {
+    -fx-font-size: 18;
+    -fx-text-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 1px;
+    /* -fx-stroke-type: outside; */
+}
+
+.active.radio-button .text {
+    -fx-strikethrough: true;
+}
