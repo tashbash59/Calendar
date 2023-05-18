@@ -1,16 +1,35 @@
 .task-component.radio-button {
     -fx-background-radius: 10;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
 .task-component.radio-button .text {
-    -fx-font-size: 18;
-    -fx-text-fill: white;
-    -fx-stroke: black;
-    -fx-stroke-width: 1px;
-    /* -fx-stroke-type: outside; */
+    -fx-font-size: 14;
+    -fx-text-fill: black;
 }
 
 .active.radio-button .text {
     -fx-strikethrough: true;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0 0.15em;
+}
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+.scroll-bar:vertical .track-background {
+    visibility: hidden;
+}
+
+.scroll-bar:vertical .track-background {
+    visibility: hidden;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #d9d9d9;
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
 }

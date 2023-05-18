@@ -83,7 +83,6 @@ public class EventWindow {
 
     private void generateEventCreationScene() {
         this.displayWindowContainer = new VBox(20);
-        System.out.println("Generating... " + this.attachedEvents);
         this.attachedEvents.forEach(event -> {
             Label eventLabel = new Label(event.getName());
             eventLabel.setOnMouseClicked(e -> {

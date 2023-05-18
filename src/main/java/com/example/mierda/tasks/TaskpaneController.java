@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class TaskpaneController implements TaskObserver {
@@ -41,9 +45,12 @@ public class TaskpaneController implements TaskObserver {
     public void update(ArrayList<Task> tasks) {
         clearTaskPane();
         tasks.forEach(task -> {
+            Region region = new Region();
+            HBox.setHgrow(region, Priority.ALWAYS);
             TaskComponent taskComponent =
                 new TaskComponent(task, this.taskModel);
-            this.taskContainer.getChildren().add(taskComponent);
+            HBox hbox = new HBox(region, taskComponent);
+            this.taskContainer.getChildren().add(hbox);
         });
     }
 }

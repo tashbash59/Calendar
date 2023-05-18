@@ -16,9 +16,12 @@ public class TaskComponent extends VBox {
     TaskComponent(Task task, TaskModel taskModel) {
         RadioButton taskName = new RadioButton(task.getName());
         taskName.getStyleClass().add("task-component");
-        String style = taskName.getStyle() + "-fx-background-color: " +
-                       task.getPriority().getRespectiveColor() + "; ";
+        String style = taskName.getStyle() + "-fx-background-color: rgba(" +
+                       task.getPriority().getRespectiveColorRGB() +
+                       ", 0.3); -fx-background-insets: 0; -fx-padding: 4px;";
+
         taskName.setStyle(style);
+        taskName.setMinWidth(280);
         this.getChildren().add(taskName);
         taskName.setSelected(task.getIsCompleted());
         if (taskName.isSelected())

@@ -116,14 +116,16 @@ public class CalendarModel {
     public void selectNextMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, 1);
         this.entriesOfDisplayedMonth = this.calculateEntries();
-        this.saveJSON();
+        this.events.clear();
+        this.parseJSON();
         this.getController().update();
     }
 
     public void selectPreviousMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, -1);
         this.entriesOfDisplayedMonth = this.calculateEntries();
-        this.saveJSON();
+        this.events.clear();
+        this.parseJSON();
         this.getController().update();
     }
 

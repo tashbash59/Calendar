@@ -3,7 +3,7 @@
         "name": "Первая задача",
         "description": "Первая задача",
         "priority": 0,
-        "isCompleted": true
+        "isCompleted": false
     },
     {
         "name": "Вторая задача",
@@ -15,7 +15,7 @@
         "name": "Неприоритетная задача",
         "description": "Неприоритетная задача",
         "priority": 2,
-        "isCompleted": true
+        "isCompleted": false
     },
     {
         "name": "aa",

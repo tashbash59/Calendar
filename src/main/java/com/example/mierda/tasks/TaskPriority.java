@@ -16,6 +16,18 @@ public enum TaskPriority {
             return "#f8ad92";
         }
     }
+    public String getRespectiveColorRGB() {
+        switch (this) {
+        case HIGH:
+            return "254, 151, 152";
+        case MEDIUM:
+            return "254, 195, 153";
+        case LOW:
+            return "246, 254, 151";
+        default:
+            return "248, 173, 146";
+        }
+    }
     public int getValue() {
         switch (this) {
         case HIGH:
