@@ -54,11 +54,12 @@ public class TaskCreationWindow {
 
     private RadioButton[] addPriorityButtons() {
         RadioButton high = new RadioButton("Высокая");
-        high.setStyle("-fx-text-fill: red");
+        high.setStyle("-fx-color: " + TaskPriority.HIGH.getRespectiveColor());
         RadioButton medium = new RadioButton("Средняя");
-        medium.setStyle("-fx-text-fill: orange");
+        medium.setStyle("-fx-color: " +
+                        TaskPriority.MEDIUM.getRespectiveColor());
         RadioButton low = new RadioButton("Низкая");
-        low.setStyle("-fx-text-fill: yellow");
+        low.setStyle("-fx-color: " + TaskPriority.LOW.getRespectiveColor());
         RadioButton[] radioButtons = new RadioButton[] {high, medium, low};
         Arrays.stream(radioButtons).forEach(button -> {
             button.setOnAction(new EventHandler<ActionEvent>() {

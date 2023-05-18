@@ -130,7 +130,6 @@ public class HelloController implements Initializable {
                         : "";
                 if (isToday) {
                     label.setMinWidth(yCellWidth * 1.75);
-                    this.taskModel.getController().update(entry);
                 }
                 label.setLayoutX(
                     (isToday) ? (xOffsets[column] - yCellWidth / 1.75 / 2)
@@ -140,9 +139,7 @@ public class HelloController implements Initializable {
                 label.setId("CalendarEntry");
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent e) {
-                        taskModel.getController().update(entry);
-                    }
+                    public void handle(MouseEvent e) {}
                 });
                 label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +
                                selectedStyle);
