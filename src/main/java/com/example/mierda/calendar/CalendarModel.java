@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Vector;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 public class CalendarModel {
     private static final int CALENDAR_COLUMNS = 7;
@@ -11,8 +13,18 @@ public class CalendarModel {
 
     private final Calendar startOfDisplayedMonth;
     private CalendarEntry[][] entriesOfDisplayedMonth;
+    private CalendarData data;
+    private CalendarController controller;
+    private AnchorPane calendarPane;
+    private Label monthLabel;
 
-    public CalendarModel() {
+    public CalendarModel(CalendarData data, AnchorPane calendarPane,
+                         Label monthLabel) {
+        this.calendarPane = calendarPane;
+        this.monthLabel = monthLabel;
+        this.controller =
+            new CalendarController(calendarPane, this, monthLabel);
+        this.data = data;
         Calendar startOfDisplayedMonth = Calendar.getInstance();
         startOfDisplayedMonth.set(Calendar.DAY_OF_MONTH, 1);
         startOfDisplayedMonth.set(Calendar.HOUR, 0);
@@ -60,6 +72,8 @@ public class CalendarModel {
 
     public int getNumberOfColumns() { return CALENDAR_COLUMNS; }
 
+    public CalendarController getController() { return this.controller; }
+
     public Calendar getStartOfDisplayedMonth() {
         return this.startOfDisplayedMonth;
     }
@@ -67,17 +81,21 @@ public class CalendarModel {
     public void selectNextMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, 1);
         this.entriesOfDisplayedMonth = this.calculateEntries();
+        this.getController().update();
     }
 
     public void selectPreviousMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, -1);
         this.entriesOfDisplayedMonth = this.calculateEntries();
+        this.getController().update();
     }
 
     public String getMonthYearString() {
         SimpleDateFormat formatter = new SimpleDateFormat("MM.yyyy");
         return formatter.format(this.startOfDisplayedMonth.getTime());
     }
+
+    public CalendarData getData() { return this.data; }
 
     private CalendarEntry[][] calculateEntries() {
         Calendar currentDay = (Calendar)this.startOfDisplayedMonth.clone();
