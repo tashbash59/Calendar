@@ -11,7 +11,9 @@ import javafx.scene.layout.AnchorPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 public class TaskModel {
+
     final String jsonLocation =
         System.getProperty("user.dir") +
         "/src/main/resources/com/example/mierda/tasks.json";

@@ -16,6 +16,9 @@ import org.json.JSONObject;
 public class CalendarData {
     private final String filepath;
     private Integer money;
+    private Integer healthM;
+    private Integer happyM;
+    private Integer hungryM;
 
     private CalendarData(String filepath) { this.filepath = filepath; }
 
