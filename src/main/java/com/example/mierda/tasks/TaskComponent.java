@@ -6,7 +6,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
 
 public class TaskComponent extends VBox {
-    TaskComponent(Task task) {
+    TaskComponent(Task task, TaskModel taskModel) {
         RadioButton taskName = new RadioButton(task.getName());
         taskName.getStyleClass().add("task-component");
         String style =
@@ -23,12 +23,9 @@ public class TaskComponent extends VBox {
         taskName.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                task.setIsCompleted(taskName.isSelected());
-                if (taskName.isSelected())
-                    taskName.getStyleClass().add("active");
-                else {
-                    taskName.getStyleClass().remove("active");
-                }
+                Task newTask = new Task(task);
+                newTask.setIsCompleted(taskName.isSelected());
+                taskModel.changeTask(task, newTask);
             }
         });
     }

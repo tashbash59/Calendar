@@ -5,10 +5,10 @@
 
 .task-component.radio-button .text {
     /* -fx-fill: lightseagreen; */
-    -fx-font-size: 16;
+    -fx-font-size: 18;
     -fx-text-fill: white;
     -fx-stroke: black;
-    -fx-stroke-width: 0.7px;
+    -fx-stroke-width: 1px;
     -fx-stroke-type: outside;
 }
 
