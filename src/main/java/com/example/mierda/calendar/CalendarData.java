@@ -15,8 +15,6 @@ import org.json.JSONObject;
 
 public class CalendarData {
     private final String filepath;
-    private String name;
-    private HashMap<String, Vector<TaskLink>> monthToTasks;
     private Integer money;
 
     private CalendarData(String filepath) { this.filepath = filepath; }
@@ -30,43 +28,11 @@ public class CalendarData {
             return data;
         }
         JSONObject object = new JSONObject(content);
-        Object name = object.get("name");
-        if (name != null) {
-            if (name.getClass().getSimpleName().equals("String"))
-                data.name = (String)name;
-        }
 
         Object money = object.get("money");
         if (money != null) {
             if (money.getClass().equals(Integer.valueOf(0).getClass()))
                 data.money = (Integer)money;
-        }
-
-        Object tasks = object.get("tasks");
-        if (!(tasks.getClass().getSimpleName().equals("JSONObject")))
-            return data;
-        JSONObject tasksJson = (JSONObject)tasks;
-        data.monthToTasks = new HashMap<>();
-        Iterator<String> taskMontsIterator = tasksJson.keys();
-        while (taskMontsIterator.hasNext()) {
-            String key = taskMontsIterator.next();
-            Vector<TaskLink> taskLinks = new Vector<>();
-            if (!tasksJson.get(key).getClass().getSimpleName().equals(
-                    "JSONArray"))
-                continue;
-            JSONArray taskLinkArray = (JSONArray)tasksJson.get(key);
-            Iterator<Object> taskLinkArrayIter = taskLinkArray.iterator();
-            while (taskLinkArrayIter.hasNext()) {
-                Object taskLinkArrayObj = taskLinkArrayIter.next();
-                if (!taskLinkArrayObj.getClass().getSimpleName().equals(
-                        "JSONObject"))
-                    continue;
-                TaskLink link =
-                    TaskLink.fromJSONObject((JSONObject)taskLinkArrayObj);
-                if (link != null)
-                    taskLinks.add(link);
-            }
-            data.monthToTasks.put(key, taskLinks);
         }
 
         return data;
@@ -77,7 +43,6 @@ public class CalendarData {
             System.getProperty("user.dir") +
             "/src/main/resources/com/example/mierda/calendarData_default.json");
         data.money = 1000;
-        data.name = "MyMierda";
         HashMap<String, Vector<TaskLink>> monthToTasks = new HashMap<>();
         TaskLink link1 = new TaskLink(
             "21",
@@ -98,28 +63,13 @@ public class CalendarData {
         mayTasks.add(link4);
         monthToTasks.put("04.2023", aprilTasks);
         monthToTasks.put("05.2023", mayTasks);
-        data.monthToTasks = monthToTasks;
 
         return data;
     }
 
     public JSONObject toJSONObect() {
         JSONObject object = new JSONObject();
-        object.put("name", this.name);
         object.put("money", this.money);
-        JSONObject tasks = new JSONObject();
-        if (this.monthToTasks == null)
-            return object;
-        for (String key : this.monthToTasks.keySet()) {
-            Vector<TaskLink> taskLinks = this.monthToTasks.get(key);
-            JSONArray taskLinksJsonArray = new JSONArray();
-            taskLinks.forEach(taskLink -> {
-                taskLinksJsonArray.put(taskLink.toJSONObject());
-            });
-            tasks.put(key, taskLinksJsonArray);
-        }
-        object.put("tasks", tasks);
-
         return object;
     }
 
@@ -137,18 +87,29 @@ public class CalendarData {
     }
 
     public Vector<TaskLink> getMonthTasks(Calendar month) {
-        if (this.monthToTasks == null)
-            return null;
+        SimpleDateFormat formatter = new SimpleDateFormat("MMyyyy");
+        String filename = "t" + formatter.format(month.getTime()) + ".json";
+        String tasksFilepath = System.getProperty("user.dir") +
+                               "/src/main/resources/com/example/mierda/" +
+                               filename;
+        String content;
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("MM.yyyy");
-            String key = formatter.format(month.getTime());
-            if (this.monthToTasks.get(key) == null)
-                return null;
-            return this.monthToTasks.get(key);
+            content = new String(Files.readAllBytes(Paths.get(tasksFilepath)));
         } catch (Exception e) {
-            System.out.println("Could not parse the month key due to: " + e);
+            return null;
         }
-        return null;
+        JSONArray root = new JSONArray(content);
+        Iterator<Object> monthsTasksIterator = root.iterator();
+        Vector<TaskLink> taskLinks = new Vector<>();
+        while (monthsTasksIterator.hasNext()) {
+            Object tasks = monthsTasksIterator.next();
+            if (!tasks.getClass().getSimpleName().equals("JSONObject"))
+                continue;
+            TaskLink link = TaskLink.fromJSONObject((JSONObject)tasks);
+            if (link != null)
+                taskLinks.add(link);
+        }
+        return taskLinks;
     }
 
     public int getMoney() { return this.money; }

@@ -1,15 +1,3 @@
 {
-    "money": 9310,
-    "name": "MyMierda",
-    "tasks": {
-        "05.2023": [{"22": ["Hello world"]}],
-        "04.2023": [
-            {"21": ["First task!"]},
-            {"22": ["Second task!"]},
-            {"23": [
-                "Third task!",
-                "HelloWorld2!"
-            ]}
-        ]
-    }
+    "money": 9020
 }
