@@ -89,7 +89,7 @@ public class CalendarData {
         }
     }
 
-    public Vector<TaskLink> getMonthTasks(Calendar month) {
+    public Vector<CalendarEvent> getMonthEvents(Calendar month) {
         SimpleDateFormat formatter = new SimpleDateFormat("MMyyyy");
         String filename = "t" + formatter.format(month.getTime()) + ".json";
         String tasksFilepath = System.getProperty("user.dir") +
@@ -102,17 +102,17 @@ public class CalendarData {
             return null;
         }
         JSONArray root = new JSONArray(content);
-        Iterator<Object> monthsTasksIterator = root.iterator();
-        Vector<TaskLink> taskLinks = new Vector<>();
-        while (monthsTasksIterator.hasNext()) {
-            Object tasks = monthsTasksIterator.next();
-            if (!tasks.getClass().getSimpleName().equals("JSONObject"))
+        Iterator<Object> monthsEventsIterator = root.iterator();
+        Vector<CalendarEvent> events = new Vector<>();
+        while (monthsEventsIterator.hasNext()) {
+            Object currentEvent = monthsEventsIterator.next();
+            if (!currentEvent.getClass().getSimpleName().equals("JSONObject"))
                 continue;
-            TaskLink link = TaskLink.fromJSONObject((JSONObject)tasks);
-            if (link != null)
-                taskLinks.add(link);
+            CalendarEvent event = new CalendarEvent((JSONObject)currentEvent);
+            if (event != null)
+                events.add(event);
         }
-        return taskLinks;
+        return events;
     }
 
     public int getMoney() { return this.money; }

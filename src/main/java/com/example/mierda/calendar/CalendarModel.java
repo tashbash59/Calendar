@@ -1,17 +1,27 @@
 package com.example.mierda.calendar;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.Vector;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class CalendarModel {
     private static final int CALENDAR_COLUMNS = 7;
     private static final int CALENDAR_ROWS = 6;
 
     private final Calendar startOfDisplayedMonth;
+    private Vector<CalendarEvent> events;
     private CalendarEntry[][] entriesOfDisplayedMonth;
     private CalendarData data;
     private CalendarController controller;
@@ -24,6 +34,7 @@ public class CalendarModel {
         this.monthLabel = monthLabel;
         this.controller =
             new CalendarController(calendarPane, this, monthLabel);
+        this.events = new Vector<>();
         this.data = data;
         Calendar startOfDisplayedMonth = Calendar.getInstance();
         startOfDisplayedMonth.set(Calendar.DAY_OF_MONTH, 1);
@@ -33,6 +44,30 @@ public class CalendarModel {
         startOfDisplayedMonth.set(Calendar.MILLISECOND, 0);
         this.startOfDisplayedMonth = startOfDisplayedMonth;
         this.entriesOfDisplayedMonth = this.calculateEntries();
+        this.parseJSON();
+    }
+
+    public ArrayList<CalendarEvent> getEvents(Calendar calendar) {
+        ArrayList<CalendarEvent> result = new ArrayList<>();
+        for (int i = 0; i < this.events.size(); ++i) {
+            CalendarEvent event = this.events.get(i);
+            if (event.getDate().get(Calendar.DAY_OF_MONTH) ==
+                calendar.get(Calendar.DAY_OF_MONTH)) {
+                result.add(event);
+            }
+        }
+        return result;
+    }
+
+    public void addEvent(CalendarEvent event) {
+        this.events.add(event);
+        this.saveJSON();
+    }
+
+    public void replaceEvent(CalendarEvent prevEvent, CalendarEvent currEvent) {
+        this.events.remove(prevEvent);
+        this.events.add(currEvent);
+        this.saveJSON();
     }
 
     public void print() {
@@ -81,12 +116,14 @@ public class CalendarModel {
     public void selectNextMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, 1);
         this.entriesOfDisplayedMonth = this.calculateEntries();
+        this.saveJSON();
         this.getController().update();
     }
 
     public void selectPreviousMonth() {
         this.startOfDisplayedMonth.add(Calendar.MONTH, -1);
         this.entriesOfDisplayedMonth = this.calculateEntries();
+        this.saveJSON();
         this.getController().update();
     }
 
@@ -120,5 +157,53 @@ public class CalendarModel {
             }
         }
         return calendarEntries;
+    }
+
+    private String getEventsFilepath() {
+        SimpleDateFormat formatter = new SimpleDateFormat("MMyyyy");
+        String filename = null;
+        try {
+            filename = "e" +
+                       formatter.format(this.startOfDisplayedMonth.getTime()) +
+                       ".json";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String eventsFilepath = System.getProperty("user.dir") +
+                                "/src/main/resources/com/example/mierda/" +
+                                filename;
+        return eventsFilepath;
+    }
+
+    private void parseJSON() {
+        String content;
+        try {
+            content = new String(
+                Files.readAllBytes(Paths.get(this.getEventsFilepath())));
+        } catch (Exception e) {
+            return;
+        }
+        JSONArray root = new JSONArray(content);
+        Iterator<Object> iter = root.iterator();
+        while (iter.hasNext()) {
+            JSONObject taskJson = (JSONObject)iter.next();
+            this.addEvent(new CalendarEvent(taskJson));
+        }
+    }
+
+    private JSONArray toJSONArray() {
+        return new JSONArray(
+            this.events.stream().map(event -> event.toJSONObject()).toArray());
+    }
+    private void saveJSON() {
+        JSONArray object = this.toJSONArray();
+        try {
+            BufferedWriter writer =
+                new BufferedWriter(new FileWriter(this.getEventsFilepath()));
+            writer.write(object.toString(4));
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("Could not save the file due to: " + e);
+        }
     }
 }

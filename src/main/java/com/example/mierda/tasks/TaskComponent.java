@@ -9,11 +9,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
 
 public class TaskComponent extends VBox {
-    @FXML
-    public Label moneyLabel;
+    @FXML public Label moneyLabel;
     private final CalendarData calendarData = CalendarData.fromFilepath(
-            System.getProperty("user.dir") +
-                    "/src/main/resources/com/example/mierda/calendarData.json");
+        System.getProperty("user.dir") +
+        "/src/main/resources/com/example/mierda/calendarData.json");
     TaskComponent(Task task, TaskModel taskModel) {
         RadioButton taskName = new RadioButton(task.getName());
         taskName.getStyleClass().add("task-component");
@@ -33,7 +32,8 @@ public class TaskComponent extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 Task newTask = new Task(task);
-                // я пытался сделать добавление монеток за сделанное задание, пока ничего не получилось
+                // я пытался сделать добавление монеток за сделанное задание,
+                // пока ничего не получилось
                 /*if (taskName.isSelected()) {
                     System.out.println("1");
                     calendarData.addMoney(10);

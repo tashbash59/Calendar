@@ -33,23 +33,7 @@ public class CalendarController {
     }
     public void update() {
         this.clearCalendar();
-        System.out.println(this.monthLabel.getText());
         this.monthLabel.setText(this.calendarModel.getMonthYearString());
-        System.out.println(this.monthLabel.getText());
-        Vector<TaskLink> taskData = this.calendarModel.getData().getMonthTasks(
-            this.calendarModel.getStartOfDisplayedMonth());
-        if (taskData != null)
-            taskData.forEach(taskLink -> {
-                taskLink.getTasks().forEach(task -> {
-                    try {
-                        this.calendarModel.addTask(
-                            Integer.parseInt(taskLink.getDay()), task);
-                    } catch (Exception e) {
-                        System.out.println("Could not parse task day due to: " +
-                                           e);
-                    }
-                });
-            });
 
         final double[] xOffsets = {22.0,  60.0,  104.0, 146.0,
                                    191.0, 235.0, 279.0};
@@ -86,8 +70,10 @@ public class CalendarController {
                 label.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        new EventWindow(calendarPane.getScene().getWindow(),
-                                        calendarModel);
+                        new EventWindow(
+                            calendarPane.getScene().getWindow(), calendarModel,
+                            entry.getDate(),
+                            calendarModel.getEvents(entry.getDate()));
                     }
                 });
                 label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +
