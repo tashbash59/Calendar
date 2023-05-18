@@ -24,6 +24,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -44,6 +46,7 @@ public class HelloController implements Initializable {
     @FXML public AnchorPane taskPane;
     @FXML public Label monthLabel;
     @FXML private Button createTaskButton;
+    @FXML private TextField createTaskText;
 
     private TaskModel taskModel;
     private CalendarModel calendarModel;
@@ -69,8 +72,15 @@ public class HelloController implements Initializable {
         this.createTaskButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent arg0) {
-                new TaskCreationWindow(createTaskButton.getScene().getWindow(),
-                                       taskModel);
+                String text = createTaskText.getText();
+                if (text != null)
+                    new TaskCreationWindow(
+                        createTaskButton.getScene().getWindow(), taskModel,
+                        text);
+                else {
+                    new TaskCreationWindow(
+                        createTaskButton.getScene().getWindow(), taskModel);
+                }
             }
         });
     }

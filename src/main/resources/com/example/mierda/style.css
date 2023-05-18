@@ -4,12 +4,11 @@
 }
 
 .task-component.radio-button .text {
-    /* -fx-fill: lightseagreen; */
     -fx-font-size: 18;
     -fx-text-fill: white;
     -fx-stroke: black;
     -fx-stroke-width: 1px;
-    -fx-stroke-type: outside;
+    /* -fx-stroke-type: outside; */
 }
 
 .active.radio-button .text {

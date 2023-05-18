@@ -16,9 +16,7 @@ public class TaskpaneController implements TaskObserver {
     private TaskModel taskModel;
 
     public TaskpaneController(AnchorPane taskPane, TaskModel taskModel) {
-        while (taskPane.getChildren().size() != 0) {
-            taskPane.getChildren().remove(taskPane.getChildren().get(0));
-        }
+        taskPane.getChildren().clear();
         this.taskModel = taskModel;
         this.taskPane = taskPane;
         this.taskContainer = new VBox(SPACING_SIZE);
@@ -43,8 +41,9 @@ public class TaskpaneController implements TaskObserver {
     public void update(ArrayList<Task> tasks) {
         clearTaskPane();
         tasks.forEach(task -> {
-            this.taskContainer.getChildren().add(
-                new TaskComponent(task, taskModel));
+            TaskComponent taskComponent =
+                new TaskComponent(task, this.taskModel);
+            this.taskContainer.getChildren().add(taskComponent);
         });
     }
 }

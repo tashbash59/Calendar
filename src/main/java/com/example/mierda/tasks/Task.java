@@ -45,6 +45,7 @@ public class Task {
     public void setIsCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
     }
+    public String getDescritpion() { return this.description; }
     public boolean getIsCompleted() { return this.isCompleted; }
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();

@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -23,6 +24,30 @@ public class TaskCreationWindow {
 
     public TaskCreationWindow(Window window, TaskModel taskModel) {
         this(window, taskModel, "");
+    }
+    public TaskCreationWindow(Window window, TaskModel taskModel,
+                              Task attachedTask) {
+        this(window, taskModel, attachedTask.getName());
+        this.container.getChildren().remove(saveButton);
+        this.taskDescriptionTextField.setText(attachedTask.getDescritpion());
+        this.priorityButtons[attachedTask.getPriority().getValue()].setSelected(
+            true);
+        HBox controlsContainer = new HBox();
+        Button editButton = new Button("Изменить");
+        editButton.setOnMouseClicked(event -> {
+            Task newTask = this.createTask();
+            newTask.setIsCompleted(attachedTask.getIsCompleted());
+            this.taskModel.changeTask(attachedTask, newTask);
+            ((Stage)controlsContainer.getScene().getWindow()).close();
+        });
+        controlsContainer.getChildren().add(editButton);
+        Button deleteButton = new Button("Удалить");
+        deleteButton.setOnMouseClicked(event -> {
+            taskModel.removeTask(attachedTask);
+            ((Stage)controlsContainer.getScene().getWindow()).close();
+        });
+        controlsContainer.getChildren().add(deleteButton);
+        this.container.getChildren().add(controlsContainer);
     }
     public TaskCreationWindow(Window window, TaskModel taskModel,
                               String initialText) {
@@ -88,7 +113,7 @@ public class TaskCreationWindow {
         return saveButton;
     }
 
-    private void saveTask() {
+    private Task createTask() {
         String name = taskNameTextField.getText();
         String description = taskDescriptionTextField.getText();
         TaskPriority priority = TaskPriority.LOW;
@@ -108,7 +133,8 @@ public class TaskCreationWindow {
             }
             break;
         }
-        Task task = new Task(name, description, priority);
-        this.taskModel.addTask(task);
+        return new Task(name, description, priority);
     }
+
+    private void saveTask() { this.taskModel.addTask(this.createTask()); }
 }
