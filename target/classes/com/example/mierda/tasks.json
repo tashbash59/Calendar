@@ -1,20 +1,6 @@
-[
-    {
-        "name": "Задача на так много букаф что прям переполняет",
-        "description": "Первая задача",
-        "priority": 0,
-        "isCompleted": false
-    },
-    {
-        "name": "Вторая задача",
-        "description": "Вторая задача",
-        "priority": 1,
-        "isCompleted": false
-    },
-    {
-        "name": "Неприоритетная задача",
-        "description": "Неприоритетная задача",
-        "priority": 2,
-        "isCompleted": false
-    }
-]
+[{
+    "name": "Неприоритетная задача",
+    "description": "Неприоритетная задача",
+    "priority": 2,
+    "isCompleted": false
+}]

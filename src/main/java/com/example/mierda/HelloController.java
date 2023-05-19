@@ -94,40 +94,43 @@ public class HelloController implements Initializable {
     }
 
     private void buttonAnimations(Button button, Image firstImage, int timer,
-                                  Image secondImage, AnchorPane bar,SpriteAnimation animation, int count) {
+                                  Image secondImage, AnchorPane bar,
+                                  SpriteAnimation animation, int count) {
         System.out.println(count);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (healthBar.getPrefWidth()-1 < healthBar.getMinWidth()) {
+                if (healthBar.getPrefWidth() - 1 < healthBar.getMinWidth()) {
                     return;
-                } else if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar &&
-                        calendarData.getMoney() > 0) {
+                } else if (bar.getPrefWidth() <
+                               bar.getMaxWidth() - onePartBar &&
+                           calendarData.getMoney() > 0) {
                     animation.stop();
                     animation.setCount(count);
                     animation.play();
                     mierdaAnimation.setImage(firstImage);
                     animation.play();
                     PauseTransition pause =
-                            new PauseTransition(Duration.millis(timer));
-                    pause.setOnFinished(
-                            event1 -> {
-                                animation.stop();
-                                animation.setCount(24);
-                                mierdaAnimation.setImage(secondImage);
-                                animation.play();
-                            });
+                        new PauseTransition(Duration.millis(timer));
+                    pause.setOnFinished(event1 -> {
+                        animation.stop();
+                        animation.setCount(24);
+                        mierdaAnimation.setImage(secondImage);
+                        animation.play();
+                    });
                     pause.play();
                 }
             }
         });
     }
     private void revivalButton(Button button, Image firstImage, int timer,
-                               Image secondImage, AnchorPane bar,SpriteAnimation animation) {
+                               Image secondImage, AnchorPane bar,
+                               SpriteAnimation animation) {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (bar.getPrefWidth()-1 < bar.getMinWidth() && calendarData.getMoney() > 99) {
+                if (bar.getPrefWidth() - 1 < bar.getMinWidth() &&
+                    calendarData.getMoney() > 99) {
                     animation.stop();
                     animation.setColumns(8);
                     animation.setCount(54);
@@ -137,20 +140,19 @@ public class HelloController implements Initializable {
                     animation.play();
                     mierdaAnimation.setImage(firstImage);
                     PauseTransition pause =
-                            new PauseTransition(Duration.millis(timer));
-                    pause.setOnFinished(
-                            event1 -> {
-                                mierdaAnimation.setImage(secondImage);
-                                System.out.println("1");
-                                animation.setColumns(6);
-                                animation.setCount(24);
-                            });
+                        new PauseTransition(Duration.millis(timer));
+                    pause.setOnFinished(event1 -> {
+                        mierdaAnimation.setImage(secondImage);
+                        System.out.println("1");
+                        animation.setColumns(6);
+                        animation.setCount(24);
+                    });
 
                     pause.play();
                     calendarData.addMoney(-100);
                     calendarData.save();
                     moneyLabel.setText(
-                            Integer.toString(calendarData.getMoney()));
+                        Integer.toString(calendarData.getMoney()));
                     healthBar.setPrefWidth(healthBar.getMaxWidth());
                 }
             }
@@ -173,13 +175,13 @@ public class HelloController implements Initializable {
             new File(currentDirectory + "/src/main/images/regen3.png");
         Image regen = new Image(regenFile.toURI().toString());
         File playFile =
-                new File(currentDirectory + "/src/main/images/game.png");
+            new File(currentDirectory + "/src/main/images/game.png");
         Image play = new Image(playFile.toURI().toString());
         File deathFile =
-                new File(currentDirectory + "/src/main/images/death.png");
+            new File(currentDirectory + "/src/main/images/death.png");
         Image death = new Image(deathFile.toURI().toString());
         File revivalFile =
-                new File(currentDirectory + "/src/main/images/revival.png");
+            new File(currentDirectory + "/src/main/images/revival.png");
         Image revivalM = new Image(revivalFile.toURI().toString());
 
         final int COLUMNS = 6;
@@ -191,13 +193,13 @@ public class HelloController implements Initializable {
         final int TIMER = 1500;
 
         final Animation animation =
-                new SpriteAnimation(mierdaAnimation, Duration.millis(TIMER), COUNT,
-                        COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-        if (healthBar.getPrefWidth()-1 == health.getMinWidth()) {
-            ((SpriteAnimation) animation).setColumns(1);
-            ((SpriteAnimation) animation).setCount(1);
+            new SpriteAnimation(mierdaAnimation, Duration.millis(TIMER), COUNT,
+                                COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+        if (healthBar.getPrefWidth() - 1 == health.getMinWidth()) {
+            ((SpriteAnimation)animation).setColumns(1);
+            ((SpriteAnimation)animation).setCount(1);
             mierdaAnimation.setImage(death);
-        }else {
+        } else {
             mierdaAnimation.setImage(sleep);
         }
         mierdaAnimation.setViewport(
@@ -208,13 +210,17 @@ public class HelloController implements Initializable {
             MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    //mierdaAnimation.setImage(defaultM);
+                    // mierdaAnimation.setImage(defaultM);
                 }
             });
-        buttonAnimations(eat, eating, TIMER, defaultM, eatBar, ((SpriteAnimation) animation),24);
-        buttonAnimations(health, regen, TIMER, defaultM, healthBar, ((SpriteAnimation) animation),24);
-        buttonAnimations(happy, play, TIMER, defaultM, happyBar, ((SpriteAnimation) animation),72);
-        revivalButton(revival,revivalM,TIMER,defaultM,healthBar, ((SpriteAnimation) animation));
+        buttonAnimations(eat, eating, TIMER, defaultM, eatBar,
+                         ((SpriteAnimation)animation), 24);
+        buttonAnimations(health, regen, TIMER, defaultM, healthBar,
+                         ((SpriteAnimation)animation), 24);
+        buttonAnimations(happy, play, TIMER, defaultM, happyBar,
+                         ((SpriteAnimation)animation), 72);
+        revivalButton(revival, revivalM, TIMER, defaultM, healthBar,
+                      ((SpriteAnimation)animation));
     }
 
     private void eating(AnchorPane bar, Button button) {
@@ -224,25 +230,25 @@ public class HelloController implements Initializable {
                 public void handle(MouseEvent mouseEvent) {
                     if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar &&
                         calendarData.getMoney() > 0) {
-                        if (healthBar.getPrefWidth()-1 < healthBar.getMinWidth()) {
+                        if (healthBar.getPrefWidth() - 1 <
+                            healthBar.getMinWidth()) {
                             return;
                         } else {
                             bar.setPrefWidth(bar.getWidth() + onePartBar);
                             calendarData.addMoney(-10);
-                            calendarData.save();
                             moneyLabel.setText(
-                                    Integer.toString(calendarData.getMoney()));
+                                Integer.toString(calendarData.getMoney()));
                         }
                     } else if (bar.getPrefWidth() < bar.getMaxWidth() &&
                                calendarData.getMoney() > 0) {
-                        if (healthBar.getPrefWidth()-1 < healthBar.getMinWidth()) {
+                        if (healthBar.getPrefWidth() - 1 <
+                            healthBar.getMinWidth()) {
                             return;
                         } else {
                             bar.setPrefWidth(bar.getMaxWidth());
                             calendarData.addMoney(-10);
-                            calendarData.save();
                             moneyLabel.setText(
-                                    Integer.toString(calendarData.getMoney()));
+                                Integer.toString(calendarData.getMoney()));
                         }
                     }
                 }

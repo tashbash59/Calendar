@@ -16,6 +16,7 @@ import javafx.stage.Window;
 
 public class TaskCreationWindow {
     private VBox container;
+    private HBox mainConatiner;
     private TextField taskNameTextField;
     private TextField taskDescriptionTextField;
     private RadioButton[] priorityButtons;
@@ -52,11 +53,12 @@ public class TaskCreationWindow {
     public TaskCreationWindow(Window window, TaskModel taskModel,
                               String initialText) {
         final Stage dialog = new Stage();
+        this.mainConatiner = new HBox();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(window);
         this.container = new VBox(20);
         this.taskModel = taskModel;
-        Scene dialogScene = new Scene(this.container, 500, 500);
+        Scene dialogScene = new Scene(this.container, 700, 500);
         this.taskNameTextField =
             this.addLabeledTextField("Задача:", initialText);
         this.taskDescriptionTextField =
