@@ -20,7 +20,7 @@ public class Task {
     }
     public Task(JSONObject jsonObject) {
         this.name = (String)jsonObject.get("name");
-        this.description = (String)jsonObject.get("name");
+        this.description = (String)jsonObject.get("description");
         switch ((int)jsonObject.get("priority")) {
         case 0:
             this.priority = TaskPriority.HIGH;

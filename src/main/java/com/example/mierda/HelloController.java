@@ -50,13 +50,12 @@ public class HelloController implements Initializable {
     @FXML public Button revival;
 
     private TaskModel taskModel;
-    private CalendarModel calendarModel;
     final double onePartBar = 43.4;
 
     private final CalendarData calendarData = CalendarData.fromFilepath(
         System.getProperty("user.dir") +
         "/src/main/resources/com/example/mierda/calendarData.json");
-
+    private CalendarModel calendarModel;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
@@ -87,77 +86,12 @@ public class HelloController implements Initializable {
     }
 
     private void initCalendarComponent() {
-        var children = new ArrayList<>(this.calendarComponent.getChildren());
-        for (javafx.scene.Node child : children) {
-            String id = child.getId();
-            if (id == null)
-                continue;
-            if (!id.equals("CalendarEntry"))
-                continue;
-            this.calendarComponent.getChildren().remove(child);
-        }
+        this.calendarModel = new CalendarModel(
+            this.calendarData, this.calendarComponent, this.monthLabel);
 
-        if (this.calendarModel == null)
-            this.calendarModel = new CalendarModel();
-
-        this.monthLabel.setText(this.calendarModel.getMonthYearString());
-        Vector<TaskLink> taskData = this.calendarData.getMonthTasks(
-            this.calendarModel.getStartOfDisplayedMonth());
-        if (taskData != null)
-            taskData.forEach(taskLink -> {
-                taskLink.getTasks().forEach(task -> {
-                    try {
-                        this.calendarModel.addTask(
-                            Integer.parseInt(taskLink.getDay()), task);
-                    } catch (Exception e) {
-                        System.out.println("Could not parse task day due to: " +
-                                           e);
-                    }
-                });
-            });
-
-        final double[] xOffsets = {22.0,  60.0,  104.0, 146.0,
-                                   191.0, 235.0, 279.0};
-        final double yCellWidth = 14.0;
-        final double yBaseOffset = 10.0;
-
-        for (int row = 0; row < this.calendarModel.getNumberOfRows(); ++row) {
-            for (int column = 0;
-                 column < this.calendarModel.getNumberOfColumns(); ++column) {
-                CalendarEntry entry = this.calendarModel.getEntry(row, column);
-                Label label = new Label(entry == null ? "" : entry.toString());
-                label.setMinWidth(yCellWidth);
-                boolean isToday =
-                    (entry != null &&
-                     entry.getDate().get(Calendar.DAY_OF_MONTH) ==
-                         (Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) &&
-                     entry.getDate().get(Calendar.MONTH) ==
-                         Calendar.getInstance().get(Calendar.MONTH) &&
-                     entry.getDate().get(Calendar.YEAR) ==
-                         Calendar.getInstance().get(Calendar.YEAR));
-                String selectedStyle =
-                    isToday
-                        ? "-fx-background-color: #caef6d; -fx-background-radius: 30px 15px;"
-                        : "";
-                if (isToday) {
-                    label.setMinWidth(yCellWidth * 1.75);
-                }
-                label.setLayoutX(
-                    (isToday) ? (xOffsets[column] - yCellWidth / 1.75 / 2)
-                              : xOffsets[column]);
-                label.setLayoutY((yCellWidth + yBaseOffset) * (row + 2));
-                label.setAlignment(Pos.CENTER);
-                label.setId("CalendarEntry");
-                label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent e) {}
-                });
-                label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +
-                               selectedStyle);
-                this.calendarComponent.getChildren().add(label);
-            }
-        }
+        this.calendarModel.getController().update();
     }
+
     private void buttonAnimations(Button button, Image firstImage, int timer,
                                   Image secondImage, AnchorPane bar) {
         button.setOnAction(new EventHandler<ActionEvent>() {
@@ -298,12 +232,10 @@ public class HelloController implements Initializable {
     @FXML
     public void selectNextMonth() {
         this.calendarModel.selectNextMonth();
-        this.initCalendarComponent();
     }
 
     @FXML
     public void selectPreviousMonth() {
         this.calendarModel.selectPreviousMonth();
-        this.initCalendarComponent();
     }
 }

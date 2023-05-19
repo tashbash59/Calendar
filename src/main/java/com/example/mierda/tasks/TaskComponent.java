@@ -9,17 +9,21 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
 
 public class TaskComponent extends VBox {
-    @FXML
-    public Label moneyLabel;
+    @FXML public Label moneyLabel;
     private final CalendarData calendarData = CalendarData.fromFilepath(
-            System.getProperty("user.dir") +
-                    "/src/main/resources/com/example/mierda/calendarData.json");
+        System.getProperty("user.dir") +
+        "/src/main/resources/com/example/mierda/calendarData.json");
     TaskComponent(Task task, TaskModel taskModel) {
         RadioButton taskName = new RadioButton(task.getName());
         taskName.getStyleClass().add("task-component");
-        String style = taskName.getStyle() + "-fx-background-color: " +
-                       task.getPriority().getRespectiveColor() + "; ";
+        String style = taskName.getStyle() + "-fx-background-color: rgba(" +
+                       task.getPriority().getRespectiveColorRGB() +
+                       ", 0.3); -fx-background-insets: 0; -fx-padding: 4px;";
+
         taskName.setStyle(style);
+        taskName.setMinWidth(280);
+        taskName.setMaxWidth(280);
+        taskName.setWrapText(true);
         this.getChildren().add(taskName);
         taskName.setSelected(task.getIsCompleted());
         if (taskName.isSelected())
@@ -33,7 +37,8 @@ public class TaskComponent extends VBox {
             @Override
             public void handle(ActionEvent event) {
                 Task newTask = new Task(task);
-                // я пытался сделать добавление монеток за сделанное задание, пока ничего не получилось
+                // я пытался сделать добавление монеток за сделанное задание,
+                // пока ничего не получилось
                 /*if (taskName.isSelected()) {
                     System.out.println("1");
                     calendarData.addMoney(10);
