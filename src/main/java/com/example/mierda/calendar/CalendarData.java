@@ -16,9 +16,9 @@ import org.json.JSONObject;
 public class CalendarData {
     private final String filepath;
     private Integer money;
-    private Integer healthM;
-    private Integer happyM;
-    private Integer hungryM;
+    private Integer health;
+    private Integer happy;
+    private Integer hungry;
 
     private CalendarData(String filepath) { this.filepath = filepath; }
 
@@ -37,6 +37,22 @@ public class CalendarData {
             if (money.getClass().equals(Integer.valueOf(0).getClass()))
                 data.money = (Integer)money;
         }
+        Object health = object.get("health");
+        if (health != null) {
+            if (health.getClass().equals(Integer.valueOf(0).getClass()))
+                data.health = (Integer) health;
+        }
+        Object hungry = object.get("hungry");
+        if (hungry != null) {
+            if (health.getClass().equals(Integer.valueOf(0).getClass()))
+                data.hungry = (Integer) hungry;
+        }
+        Object happy = object.get("happy");
+        if (happy != null) {
+            if (health.getClass().equals(Integer.valueOf(0).getClass()))
+                data.happy = (Integer) happy;
+        }
+
 
         return data;
     }
@@ -44,6 +60,9 @@ public class CalendarData {
     public JSONObject toJSONObect() {
         JSONObject object = new JSONObject();
         object.put("money", this.money);
+        object.put("health", this.health);
+        object.put("happy", this.happy);
+        object.put("hungry", this.hungry);
         return object;
     }
 
@@ -87,8 +106,25 @@ public class CalendarData {
     }
 
     public int getMoney() { return this.money; }
+    public int getHealth() { return this.health; }
+    public int getHappy() {return this.happy;}
+    public int getHungry() {return this.hungry;}
+
     public void addMoney(int amount) {
         this.money += amount;
+        this.save();
+    }
+    public void setHealth(int health) {
+        this.health = health;
+        this.save();
+    }
+    public void setHappy(int happy) {
+        this.happy = happy;
+        this.save();
+    }
+
+    public void setHungry(int hungry) {
+        this.hungry = hungry;
         this.save();
     }
 }

@@ -60,6 +60,9 @@ public class HelloController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
+        healthBar.setPrefWidth(calendarData.getHealth());
+        happyBar.setPrefWidth(calendarData.getHappy());
+        eatBar.setPrefWidth(calendarData.getHungry());
         this.taskModel = new TaskModel(this.taskPane);
         initAnimation();
         initCalendarComponent();
@@ -96,7 +99,6 @@ public class HelloController implements Initializable {
     private void buttonAnimations(Button button, Image firstImage, int timer,
                                   Image secondImage, AnchorPane bar,
                                   SpriteAnimation animation, int count) {
-        System.out.println(count);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -134,23 +136,17 @@ public class HelloController implements Initializable {
                     animation.stop();
                     animation.setColumns(8);
                     animation.setCount(54);
-                    animation.setOffsetX(1);
-                    animation.setOffsetY(1);
-                    animation.setLastIndex(1);
                     animation.play();
                     mierdaAnimation.setImage(firstImage);
                     PauseTransition pause =
                         new PauseTransition(Duration.millis(timer));
                     pause.setOnFinished(event1 -> {
                         mierdaAnimation.setImage(secondImage);
-                        System.out.println("1");
                         animation.setColumns(6);
                         animation.setCount(24);
                     });
-
                     pause.play();
                     calendarData.addMoney(-100);
-                    calendarData.save();
                     moneyLabel.setText(
                         Integer.toString(calendarData.getMoney()));
                     healthBar.setPrefWidth(healthBar.getMaxWidth());
@@ -235,6 +231,9 @@ public class HelloController implements Initializable {
                             return;
                         } else {
                             bar.setPrefWidth(bar.getWidth() + onePartBar);
+                            if (bar == healthBar) calendarData.setHealth((int) bar.getWidth() + (int) onePartBar);
+                            else if (bar == happyBar) calendarData.setHappy((int) bar.getWidth() + (int) onePartBar);
+                            else if (bar == eatBar) calendarData.setHungry((int) bar.getWidth() + (int) onePartBar);
                             calendarData.addMoney(-10);
                             moneyLabel.setText(
                                 Integer.toString(calendarData.getMoney()));
@@ -245,6 +244,9 @@ public class HelloController implements Initializable {
                             healthBar.getMinWidth()) {
                             return;
                         } else {
+                            if (bar == healthBar) calendarData.setHealth((int) bar.getMaxWidth());
+                            else if (bar == happyBar) calendarData.setHappy((int) bar.getMaxWidth());
+                            else if (bar == eatBar) calendarData.setHungry((int) bar.getMaxWidth());
                             bar.setPrefWidth(bar.getMaxWidth());
                             calendarData.addMoney(-10);
                             moneyLabel.setText(

@@ -21,6 +21,7 @@ public class HelloApplication extends Application {
         File file = new File(System.getProperty("user.dir")+"/src/main/images/icon.png");
         Image image = new Image(file.toURI().toString());
         stage.setTitle("Миерда");
+
         stage.setScene(scene);
         stage.getIcons().add(image);
         stage.show();

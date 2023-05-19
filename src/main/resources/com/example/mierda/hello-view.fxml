@@ -33,7 +33,7 @@
          <children>
             <AnchorPane layoutX="27.0" layoutY="23.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F2F2F2;">
                <children>
-                  <AnchorPane fx:id="healthBar" layoutY="2.0" maxWidth="434.0" minWidth="0.0" prefHeight="22.0" prefWidth="0.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #FF976B;" />
+                  <AnchorPane fx:id="healthBar" layoutY="2.0" maxWidth="434.0" minWidth="0.0" prefHeight="22.0" prefWidth="1.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #FF976B;" />
                   <Label layoutX="31.0" layoutY="4.0" prefHeight="18.0" prefWidth="64.0" text="здоровье" textFill="WHITE" />
                </children></AnchorPane>
             <AnchorPane layoutX="27.0" layoutY="57.0" prefHeight="20.0" prefWidth="434.0" style="-fx-border-radius: 10px; -fx-border-color: #D9D9D9; -fx-background-radius: 10px; -fx-background-color: #F2F2F2;">
