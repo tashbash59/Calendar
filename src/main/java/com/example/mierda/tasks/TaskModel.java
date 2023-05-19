@@ -44,6 +44,18 @@ public class TaskModel {
         this.saveJSON();
         this.notifyObservers();
     }
+    public int revmoveCompletedTasks() {
+        int result = 0;
+        for (int i = 0; i < this.tasks.size(); ++i) {
+            if (tasks.get(i).getIsCompleted()) {
+                this.removeTask(tasks.get(i));
+                result += 1;
+                i -= 1;
+            }
+        }
+        this.notifyObservers();
+        return result;
+    }
     public TaskpaneController getController() { return this.controller; };
     private void addObserver(TaskObserver observer) {
         this.observers.add(observer);
