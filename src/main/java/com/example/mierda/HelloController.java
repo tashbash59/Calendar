@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -93,7 +94,8 @@ public class HelloController implements Initializable {
     }
 
     private void buttonAnimations(Button button, Image firstImage, int timer,
-                                  Image secondImage, AnchorPane bar) {
+                                  Image secondImage, AnchorPane bar,SpriteAnimation animation, int count) {
+        System.out.println(count);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -101,11 +103,20 @@ public class HelloController implements Initializable {
                     return;
                 } else if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar &&
                         calendarData.getMoney() > 0) {
+                    animation.stop();
+                    animation.setCount(count);
+                    animation.play();
                     mierdaAnimation.setImage(firstImage);
+                    animation.play();
                     PauseTransition pause =
                             new PauseTransition(Duration.millis(timer));
                     pause.setOnFinished(
-                            event1 -> mierdaAnimation.setImage(secondImage));
+                            event1 -> {
+                                animation.stop();
+                                animation.setCount(24);
+                                mierdaAnimation.setImage(secondImage);
+                                animation.play();
+                            });
                     pause.play();
                 }
             }
@@ -117,16 +128,25 @@ public class HelloController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 if (bar.getPrefWidth()-1 < bar.getMinWidth() && calendarData.getMoney() > 99) {
+                    animation.stop();
                     animation.setColumns(8);
-                    animation.setCount(56);
+                    animation.setCount(54);
+                    animation.setOffsetX(1);
+                    animation.setOffsetY(1);
+                    animation.setLastIndex(1);
+                    animation.play();
                     mierdaAnimation.setImage(firstImage);
                     PauseTransition pause =
                             new PauseTransition(Duration.millis(timer));
                     pause.setOnFinished(
-                            event1 -> mierdaAnimation.setImage(secondImage));
+                            event1 -> {
+                                mierdaAnimation.setImage(secondImage);
+                                System.out.println("1");
+                                animation.setColumns(6);
+                                animation.setCount(24);
+                            });
+
                     pause.play();
-                    animation.setColumns(6);
-                    animation.setCount(24);
                     calendarData.addMoney(-100);
                     calendarData.save();
                     moneyLabel.setText(
@@ -153,7 +173,7 @@ public class HelloController implements Initializable {
             new File(currentDirectory + "/src/main/images/regen3.png");
         Image regen = new Image(regenFile.toURI().toString());
         File playFile =
-                new File(currentDirectory + "/src/main/images/play.png");
+                new File(currentDirectory + "/src/main/images/game.png");
         Image play = new Image(playFile.toURI().toString());
         File deathFile =
                 new File(currentDirectory + "/src/main/images/death.png");
@@ -191,9 +211,9 @@ public class HelloController implements Initializable {
                     //mierdaAnimation.setImage(defaultM);
                 }
             });
-        buttonAnimations(eat, eating, TIMER, defaultM, eatBar);
-        buttonAnimations(health, regen, TIMER, defaultM, healthBar);
-        buttonAnimations(happy, play, TIMER, defaultM, happyBar);
+        buttonAnimations(eat, eating, TIMER, defaultM, eatBar, ((SpriteAnimation) animation),24);
+        buttonAnimations(health, regen, TIMER, defaultM, healthBar, ((SpriteAnimation) animation),24);
+        buttonAnimations(happy, play, TIMER, defaultM, happyBar, ((SpriteAnimation) animation),72);
         revivalButton(revival,revivalM,TIMER,defaultM,healthBar, ((SpriteAnimation) animation));
     }
 

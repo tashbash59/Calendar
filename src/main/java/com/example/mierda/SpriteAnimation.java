@@ -42,8 +42,17 @@ public class SpriteAnimation extends Transition {
     protected void setCount(int c) {
         this.count = c;
     }
+    protected void setOffsetX(int c) {
+        this.offsetX = c;
+    }
+    protected void setOffsetY(int c) {
+        this.offsetY = c;
+    }
     protected int getLastIndex() {
         return lastIndex;
+    }
+    protected void setLastIndex(int c) {
+        this.lastIndex = c;
     }
 
     protected void interpolate(double k) {
