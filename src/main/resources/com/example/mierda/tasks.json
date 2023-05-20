@@ -1,7 +1,7 @@
 [
     {
         "name": "Неприоритетная задача",
-        "description": "Неприоритетная задача",
+        "description": "Jfjhakjf",
         "priority": 2,
         "isCompleted": false
     },
@@ -15,7 +15,7 @@
         "name": "привет!",
         "description": "вфц",
         "priority": 0,
-        "isCompleted": false
+        "isCompleted": true
     },
     {
         "name": "очень важная задача",

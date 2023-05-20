@@ -70,11 +70,6 @@
         "description": ""
     },
     {
-        "date": "05202320",
-        "name": "342343",
-        "description": ""
-    },
-    {
         "date": "05202319",
         "name": "123",
         "description": "fgdfs"
@@ -98,5 +93,10 @@
         "date": "05202319",
         "name": "",
         "description": ""
+    },
+    {
+        "date": "05202320",
+        "name": "Доавбление события",
+        "description": "Ураа"
     }
 ]

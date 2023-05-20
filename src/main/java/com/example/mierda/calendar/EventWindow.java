@@ -14,12 +14,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class EventWindow {
+    final static String BUTTON_STYLE =
+        "-fx-background-color: #f2f2f2; -fx-background-radius: 20; -fx-font-weight: 700";
+
     private VBox container;
     private VBox displayWindowContainer;
     private CalendarModel calendarModel;
@@ -46,6 +50,7 @@ public class EventWindow {
         this.sceneAContainer = new HBox(10);
         this.sceneBContainer = new HBox(10);
         this.sceneAContainer.setStyle("-fx-background-color: white");
+        this.sceneAContainer.setMinWidth(400);
         this.sceneBContainer.setStyle("-fx-background-color: white");
         this.sceneARightContainter = new VBox(10);
         this.sceneBRightContainter = new VBox(10);
@@ -95,7 +100,7 @@ public class EventWindow {
         ImageView imageView = new ImageView(image);
         sceneARightContainter.getChildren().add(imageView);
         sceneARightContainter.setStyle("-fx-background-color: white");
-        sceneARightContainter.setPadding(new Insets(140));
+        sceneARightContainter.setPadding(new Insets(110));
         return sceneARightContainter;
     }
 
@@ -116,6 +121,7 @@ public class EventWindow {
         this.eventCreationTextField = new TextField();
         container.getChildren().add(this.eventCreationTextField);
         this.eventCreationButton = new Button("+");
+        this.eventCreationButton.setStyle(BUTTON_STYLE);
         this.eventCreationButton.setOnMouseClicked(event -> {
             this.clearCreationScene();
             this.eventNameTextField.setText(
@@ -138,6 +144,11 @@ public class EventWindow {
         label.setStyle("-fx-font-size: 25; -fx-font-weight: 700");
         this.displayWindowContainer.getChildren().add(label);
         this.attachedEvents.forEach(event -> {
+            Pane pane = new Pane();
+            pane.setMinWidth(20);
+            pane.setMinHeight(10);
+            pane.setStyle(
+                "-fx-background-color: #caef6d; -fx-background-radius: 30px 15px;");
             Label eventLabel = new Label(event.getName());
             eventLabel.setOnMouseClicked(e -> {
                 this.clearCreationScene();
@@ -146,7 +157,10 @@ public class EventWindow {
                 this.attachedEvent = event;
                 this.swapWindows();
             });
-            this.displayWindowContainer.getChildren().add(eventLabel);
+            HBox container = new HBox(10);
+            container.getChildren().add(pane);
+            container.getChildren().add(eventLabel);
+            this.displayWindowContainer.getChildren().add(container);
         });
         this.displayWindowContainer.getChildren().add(
             this.addEventCreationComponent());
@@ -193,6 +207,7 @@ public class EventWindow {
 
     private Button addSaveButton() {
         Button saveButton = new Button("Сохранить");
+        saveButton.setStyle(BUTTON_STYLE);
         this.container.getChildren().add(saveButton);
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -207,6 +222,7 @@ public class EventWindow {
 
     private Button addDeleteButton() {
         Button deleteButton = new Button("Удалить");
+        deleteButton.setStyle(BUTTON_STYLE);
         this.container.getChildren().add(deleteButton);
         deleteButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
