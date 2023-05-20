@@ -60,7 +60,7 @@ public class TaskCreationWindow {
             ((Stage)controlsContainer.getScene().getWindow()).close();
         });
         controlsContainer.getChildren().add(deleteButton);
-        controlsContainer.setLayoutX(110);
+        controlsContainer.setLayoutX(170);
         controlsContainer.setLayoutY(400);
         this.containerRight.getChildren().add(controlsContainer);
     }
@@ -73,13 +73,15 @@ public class TaskCreationWindow {
         this.containerLeft = new VBox(20);
         Label label = new Label("Новая задача");
         label.setStyle("-fx-font-size: 24; -fx-font-weight: 700");
-        this.containerLeft.setPadding(new Insets(30, 60, 60, 60));
+        this.containerLeft.setPadding(new Insets(30, 30, 60, 60));
         this.containerLeft.getChildren().add(label);
         this.containerRight = new AnchorPane();
-        this.containerRight.setPadding(new Insets(30));
+        this.containerRight.setPadding(new Insets(0));
         ImageView imgView = this.getImage();
+        imgView.setPreserveRatio(true);
+        imgView.setFitWidth(350);
         imgView.setLayoutX(50);
-        imgView.setLayoutY(120);
+        imgView.setLayoutY(40);
         this.containerRight.getChildren().add(imgView);
         this.taskModel = taskModel;
         this.mainConatiner = new HBox(0);
@@ -105,7 +107,7 @@ public class TaskCreationWindow {
 
     private ImageView getImage() {
         File file = new File(System.getProperty("user.dir") +
-                             "/src/main/images/taskCreation.png");
+                             "/src/main/images/idea.png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
         return imageView;
@@ -150,7 +152,7 @@ public class TaskCreationWindow {
         Button saveButton = new Button("Сохранить");
         saveButton.setStyle(BUTTON_STYLE);
         this.containerRight.getChildren().add(saveButton);
-        saveButton.setLayoutX(170);
+        saveButton.setLayoutX(260);
         saveButton.setLayoutY(400);
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override

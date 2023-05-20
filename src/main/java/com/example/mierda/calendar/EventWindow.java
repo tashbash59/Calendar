@@ -95,24 +95,28 @@ public class EventWindow {
     private VBox createSceneARightPart() {
         VBox sceneARightContainter = new VBox();
         File file = new File(System.getProperty("user.dir") +
-                             "/src/main/images/SceneALeftImage.png");
+                             "/src/main/images/warcry.png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(400);
         sceneARightContainter.getChildren().add(imageView);
         sceneARightContainter.setStyle("-fx-background-color: white");
-        sceneARightContainter.setPadding(new Insets(110));
+        sceneARightContainter.setPadding(new Insets(80, 40, 40, 40));
         return sceneARightContainter;
     }
 
     private VBox createSceneBRightPart() {
         VBox sceneBRightContainter = new VBox();
         File file = new File(System.getProperty("user.dir") +
-                             "/src/main/images/SceneBRightImage.png");
+                             "/src/main/images/nerd.png");
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(400);
         sceneBRightContainter.getChildren().add(imageView);
         sceneBRightContainter.setStyle("-fx-background-color: white");
-        sceneBRightContainter.setPadding(new Insets(120));
+        sceneBRightContainter.setPadding(new Insets(80, 40, 40, 40));
         return sceneBRightContainter;
     }
 
