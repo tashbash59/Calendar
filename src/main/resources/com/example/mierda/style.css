@@ -33,3 +33,11 @@
     -fx-background-insets: 2, 0, 0;
     -fx-background-radius: 2em;
 }
+
+.hbox {
+    -fx-background-color: white;
+}
+
+.vbox {
+    -fx-background-color: white;
+}

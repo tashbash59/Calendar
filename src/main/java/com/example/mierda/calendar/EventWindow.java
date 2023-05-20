@@ -1,26 +1,33 @@
 package com.example.mierda.calendar;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 
 public class EventWindow {
     private VBox container;
     private VBox displayWindowContainer;
     private CalendarModel calendarModel;
     private Button saveButton;
+    private HBox sceneAContainer;
+    private HBox sceneBContainer;
+    private VBox sceneARightContainter;
+    private VBox sceneBRightContainter;
     private Button deleteButton;
     private Calendar eventDate;
     private TextField eventNameTextField;
@@ -36,20 +43,32 @@ public class EventWindow {
                        Calendar eventDate,
                        ArrayList<CalendarEvent> attachedEvents) {
         final Stage dialog = new Stage();
+        this.sceneAContainer = new HBox(10);
+        this.sceneBContainer = new HBox(10);
+        this.sceneAContainer.setStyle("-fx-background-color: white");
+        this.sceneBContainer.setStyle("-fx-background-color: white");
+        this.sceneARightContainter = new VBox(10);
+        this.sceneBRightContainter = new VBox(10);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(window);
         this.attachedEvents = attachedEvents;
         this.eventDate = eventDate;
         this.container = new VBox(20);
+        this.sceneBContainer.getChildren().add(this.container);
         this.generateEventCreationScene();
         this.isDisplayWindow = false;
         this.calendarModel = calendarModel;
-        this.dialogScene = new Scene(this.container, 500, 500);
+        this.dialogScene = new Scene(this.sceneAContainer, 800, 500);
+        Label label = new Label("Новое событие");
+        label.setStyle("-fx-font-size: 25; -fx-font-weight: 700");
+        this.container.setPadding(new Insets(30, 60, 60, 60));
+        this.container.getChildren().add(label);
         this.eventNameTextField = this.addLabeledTextField("Событие:", "");
         this.eventDescriptionTextField =
             this.addLabeledTextField("Описание:", "");
         this.saveButton = this.addSaveButton();
         this.deleteButton = this.addDeleteButton();
+        this.sceneBContainer.getChildren().add(this.createSceneBRightPart());
         dialog.setResizable(false);
         dialog.setScene(dialogScene);
         this.swapWindows();
@@ -60,12 +79,36 @@ public class EventWindow {
         this.isDisplayWindow = !this.isDisplayWindow;
         if (this.isDisplayWindow) {
             this.generateEventCreationScene();
-            this.dialogScene.setRoot(this.displayWindowContainer);
+            this.dialogScene.setRoot(this.sceneAContainer);
         } else {
             this.generateEventCreationScene();
             this.deleteButton.setVisible(this.attachedEvent != null);
-            this.dialogScene.setRoot(this.container);
+            this.dialogScene.setRoot(this.sceneBContainer);
         }
+    }
+
+    private VBox createSceneARightPart() {
+        VBox sceneARightContainter = new VBox();
+        File file = new File(System.getProperty("user.dir") +
+                             "/src/main/images/SceneALeftImage.png");
+        Image image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
+        sceneARightContainter.getChildren().add(imageView);
+        sceneARightContainter.setStyle("-fx-background-color: white");
+        sceneARightContainter.setPadding(new Insets(140));
+        return sceneARightContainter;
+    }
+
+    private VBox createSceneBRightPart() {
+        VBox sceneBRightContainter = new VBox();
+        File file = new File(System.getProperty("user.dir") +
+                             "/src/main/images/SceneBRightImage.png");
+        Image image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
+        sceneBRightContainter.getChildren().add(imageView);
+        sceneBRightContainter.setStyle("-fx-background-color: white");
+        sceneBRightContainter.setPadding(new Insets(120));
+        return sceneBRightContainter;
     }
 
     private HBox addEventCreationComponent() {
@@ -84,7 +127,16 @@ public class EventWindow {
     }
 
     private void generateEventCreationScene() {
+        this.sceneAContainer.getChildren().clear();
         this.displayWindowContainer = new VBox(20);
+        this.sceneARightContainter = this.createSceneARightPart();
+        this.displayWindowContainer.setStyle("-fx-background-color: white");
+        this.displayWindowContainer.setPadding(new Insets(30, 60, 60, 60));
+        this.sceneAContainer.getChildren().add(this.displayWindowContainer);
+        this.sceneAContainer.getChildren().add(this.sceneARightContainter);
+        Label label = new Label("События");
+        label.setStyle("-fx-font-size: 25; -fx-font-weight: 700");
+        this.displayWindowContainer.getChildren().add(label);
         this.attachedEvents.forEach(event -> {
             Label eventLabel = new Label(event.getName());
             eventLabel.setOnMouseClicked(e -> {
@@ -94,7 +146,7 @@ public class EventWindow {
                 this.attachedEvent = event;
                 this.swapWindows();
             });
-            displayWindowContainer.getChildren().add(eventLabel);
+            this.displayWindowContainer.getChildren().add(eventLabel);
         });
         this.displayWindowContainer.getChildren().add(
             this.addEventCreationComponent());
@@ -102,6 +154,8 @@ public class EventWindow {
 
     private TextField addLabeledTextField(String labelText,
                                           String textFieldText) {
+        Label label = new Label(labelText);
+        label.setStyle("-fx-font-size: 14; -fx-font-weight: 700");
         this.container.getChildren().add(new Label(labelText));
         TextField field = new TextField(textFieldText);
         this.container.getChildren().add(field);
@@ -132,10 +186,8 @@ public class EventWindow {
     }
 
     private void removeEvent() {
-        System.out.println(this.attachedEvent);
         this.calendarModel.removeEvent(this.attachedEvent);
         this.attachedEvents.remove(this.attachedEvent);
-        System.out.print(this.attachedEvents);
         this.generateEventCreationScene();
     }
 
