@@ -12,6 +12,27 @@
     -fx-strikethrough: true;
 }
 
+.radio-button .radio .dot {
+    -fx-background-insets: 0;
+    -fx-padding: 8;
+    -fx-background-radius: 100%;
+}
+
+.radio-button:selected .radio {
+    -fx-padding: 4;
+    -fx-background-insets: 0;
+}
+
+.radio-button:selected .radio .dot {
+    -fx-padding: 4;
+    -fx-background-insets: 0;
+}
+
+.radio-button .radio {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
 .scroll-bar:vertical .increment-arrow,
 .scroll-bar:vertical .decrement-arrow {
     -fx-shape: " ";
@@ -32,4 +53,12 @@
     -fx-background-color: #d9d9d9;
     -fx-background-insets: 2, 0, 0;
     -fx-background-radius: 2em;
+}
+
+.hbox {
+    -fx-background-color: white;
+}
+
+.vbox {
+    -fx-background-color: white;
 }
