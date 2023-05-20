@@ -150,6 +150,7 @@ public class HelloController implements Initializable {
                     moneyLabel.setText(
                         Integer.toString(calendarData.getMoney()));
                     healthBar.setPrefWidth(healthBar.getMaxWidth());
+                    calendarData.setHealth((int) healthBar.getMaxWidth());
                 }
             }
         });

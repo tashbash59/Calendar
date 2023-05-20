@@ -22,5 +22,11 @@
         "description": "надо сделать",
         "priority": 0,
         "isCompleted": false
+    },
+    {
+        "name": "покормить крысу",
+        "description": "",
+        "priority": 1,
+        "isCompleted": false
     }
 ]
