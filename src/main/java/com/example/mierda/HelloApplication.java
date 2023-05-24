@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class HelloApplication extends Application {
 
@@ -21,7 +22,6 @@ public class HelloApplication extends Application {
         File file = new File(System.getProperty("user.dir")+"/src/main/images/icon.png");
         Image image = new Image(file.toURI().toString());
         stage.setTitle("Миерда");
-
         stage.setScene(scene);
         stage.getIcons().add(image);
         stage.show();

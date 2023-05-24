@@ -8,20 +8,22 @@ import com.example.mierda.tasks.TaskCreationWindow;
 import com.example.mierda.tasks.TaskModel;
 import com.example.mierda.tasks.TaskpaneController;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.ResourceBundle;
-import java.util.Vector;
+import java.util.*;
+
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -31,24 +33,26 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class HelloController implements Initializable {
-    @FXML public AnchorPane calendarComponent;
-    @FXML public ImageView mierdaAnimation;
-    @FXML public Button eat;
-    @FXML public AnchorPane eatBar;
-    @FXML public Button health;
-    @FXML public AnchorPane healthBar;
-    @FXML public Button happy;
-    @FXML public AnchorPane happyBar;
-    @FXML public Label moneyLabel;
-    @FXML public AnchorPane gameAnchor;
-    @FXML public AnchorPane taskPane;
-    @FXML public Label monthLabel;
+    @FXML private AnchorPane calendarComponent;
+    @FXML private ImageView mierdaAnimation;
+    @FXML private Button eat;
+    @FXML private AnchorPane eatBar;
+    @FXML private Button health;
+    @FXML private AnchorPane healthBar;
+    @FXML private Button happy;
+    @FXML private AnchorPane happyBar;
+    @FXML private Label moneyLabel;
+    @FXML private AnchorPane gameAnchor;
+    @FXML private AnchorPane taskPane;
+    @FXML private Label monthLabel;
     @FXML private Button createTaskButton;
     @FXML private TextField createTaskText;
-    @FXML public Button revival;
+    @FXML private Button revival;
 
     private TaskModel taskModel;
     final double onePartBar = 43.4;
@@ -106,7 +110,7 @@ public class HelloController implements Initializable {
                     return;
                 } else if (bar.getPrefWidth() <
                                bar.getMaxWidth() - onePartBar &&
-                           calendarData.getMoney() > 0) {
+                           calendarData.getMoney() > 10) {
                     animation.stop();
                     animation.setCount(count);
                     animation.play();
@@ -225,7 +229,7 @@ public class HelloController implements Initializable {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     if (bar.getPrefWidth() < bar.getMaxWidth() - onePartBar &&
-                        calendarData.getMoney() > 0) {
+                        calendarData.getMoney() > 10) {
                         if (healthBar.getPrefWidth() - 1 <
                             healthBar.getMinWidth()) {
                             return;
@@ -239,7 +243,7 @@ public class HelloController implements Initializable {
                                 Integer.toString(calendarData.getMoney()));
                         }
                     } else if (bar.getPrefWidth() < bar.getMaxWidth() &&
-                               calendarData.getMoney() > 0) {
+                               calendarData.getMoney() > 10) {
                         if (healthBar.getPrefWidth() - 1 <
                             healthBar.getMinWidth()) {
                             return;
@@ -252,6 +256,8 @@ public class HelloController implements Initializable {
                             moneyLabel.setText(
                                 Integer.toString(calendarData.getMoney()));
                         }
+                    } else {
+                        ModalWindow.newWindow();
                     }
                 }
             });
