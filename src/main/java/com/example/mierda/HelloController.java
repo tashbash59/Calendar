@@ -1,5 +1,6 @@
 package com.example.mierda;
 
+import com.example.mierda.calendar.CalendarController;
 import com.example.mierda.calendar.CalendarData;
 import com.example.mierda.calendar.CalendarModel;
 import com.example.mierda.tasks.TaskCreationWindow;
@@ -223,6 +224,10 @@ public class HelloController implements Initializable {
                          ((SpriteAnimation)animation), 72);
         revivalButton(revival, revivalM, TIMER, defaultM, healthBar,
                       ((SpriteAnimation)animation));
+    }
+
+    public CalendarController getTaskController() {
+        return this.calendarModel.getController();
     }
 
     private void eating(AnchorPane bar, Button button) {

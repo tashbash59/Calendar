@@ -1,14 +1,7 @@
 {
-<<<<<<< HEAD
-    "hungry": 434,
-    "money": 1,
-    "happy": 434,
-    "health": 44
-=======
     "hungry": 0,
-    "money": 99443,
+    "money": 99263,
     "happy": 0,
     "health": 0,
-    "lastLoginDate": "20062023"
->>>>>>> 7ef21a4 (Добавлено изменение состояния миерды со временем)
+    "lastLoginDate": "24052023"
 }
