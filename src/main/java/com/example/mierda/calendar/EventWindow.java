@@ -64,7 +64,7 @@ public class EventWindow {
         this.isDisplayWindow = false;
         this.calendarModel = calendarModel;
         this.dialogScene = new Scene(this.sceneAContainer, 800, 500);
-        Label label = new Label("Новое событие");
+        Label label = new Label("Событие");
         label.setStyle("-fx-font-size: 25; -fx-font-weight: 700");
         this.container.setPadding(new Insets(30, 60, 60, 60));
         this.container.getChildren().add(label);

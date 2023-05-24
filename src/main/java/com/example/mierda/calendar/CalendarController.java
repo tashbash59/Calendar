@@ -2,10 +2,8 @@ package com.example.mierda.calendar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Vector;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -14,6 +12,7 @@ public class CalendarController {
     private AnchorPane calendarPane;
     private CalendarModel calendarModel;
     private Label monthLabel;
+    private CalendarEntry today;
 
     public CalendarController(AnchorPane calendarPane,
                               CalendarModel calendarModel, Label monthLabel) {
@@ -21,6 +20,13 @@ public class CalendarController {
         this.calendarModel = calendarModel;
         this.monthLabel = monthLabel;
     }
+
+    public void invokeTodayEventWindow() {
+        new EventWindow(calendarPane.getScene().getWindow(), calendarModel,
+                        this.today.getDate(),
+                        calendarModel.getEvents(this.today.getDate()));
+    }
+
     public void clearCalendar() {
         var children = new ArrayList<>(this.calendarPane.getChildren());
         for (javafx.scene.Node child : children) {
@@ -61,6 +67,7 @@ public class CalendarController {
                         : "";
                 if (isToday) {
                     label.setMinWidth(yCellWidth * 1.75);
+                    this.today = entry;
                 }
                 label.setLayoutX(
                     (isToday) ? (xOffsets[column] - yCellWidth / 1.75 / 2)

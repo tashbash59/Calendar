@@ -71,7 +71,7 @@ public class TaskCreationWindow {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(window);
         this.containerLeft = new VBox(20);
-        Label label = new Label("Новая задача");
+        Label label = new Label("Задача");
         label.setStyle("-fx-font-size: 24; -fx-font-weight: 700");
         this.containerLeft.setPadding(new Insets(30, 60, 60, 60));
         this.containerLeft.getChildren().add(label);

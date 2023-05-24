@@ -1,7 +1,6 @@
 package com.example.mierda.calendar;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -33,7 +32,7 @@ public class CalendarModel {
         this.calendarPane = calendarPane;
         this.monthLabel = monthLabel;
         this.controller =
-            new CalendarController(calendarPane, this, monthLabel);
+            new CalendarController(this.calendarPane, this, this.monthLabel);
         this.events = new Vector<>();
         this.data = data;
         Calendar startOfDisplayedMonth = Calendar.getInstance();
@@ -82,19 +81,6 @@ public class CalendarModel {
 
     public CalendarEntry getEntry(int row, int col) {
         return this.entriesOfDisplayedMonth[row][col];
-    }
-
-    public void generateRandomTasks() {
-        String[] tasks = {"Wash the dishes", "Mop the floor",
-                          "Finish calendar"};
-        Arrays.stream(this.entriesOfDisplayedMonth)
-            .forEach(row -> Arrays.stream(row).forEach(element -> {
-                if (element == null)
-                    return;
-                String task =
-                    tasks[(int)Math.floor(Math.random() * tasks.length)];
-                element.addTask(task);
-            }));
     }
 
     public void addTask(int dateIndex, String task) {

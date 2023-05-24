@@ -19,12 +19,16 @@ public class HelloApplication extends Application {
         scene.getStylesheets().add(
             HelloApplication.class.getResource("style.css").toExternalForm());
         stage.setResizable(false);
-        File file = new File(System.getProperty("user.dir")+"/src/main/images/icon.png");
+        File file = new File(System.getProperty("user.dir") +
+                             "/src/main/images/icon.png");
         Image image = new Image(file.toURI().toString());
         stage.setTitle("Миерда");
         stage.setScene(scene);
         stage.getIcons().add(image);
         stage.show();
+        HelloController fooController =
+            (HelloController)fxmlLoader.getController();
+        fooController.getTaskController().invokeTodayEventWindow();
     }
 
     public static void main(String[] args) { launch(); }

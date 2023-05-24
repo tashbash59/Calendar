@@ -1,33 +1,26 @@
 package com.example.mierda;
 
+import com.example.mierda.calendar.CalendarController;
 import com.example.mierda.calendar.CalendarData;
-import com.example.mierda.calendar.CalendarEntry;
 import com.example.mierda.calendar.CalendarModel;
-import com.example.mierda.calendar.TaskLink;
 import com.example.mierda.tasks.TaskCreationWindow;
 import com.example.mierda.tasks.TaskModel;
-import com.example.mierda.tasks.TaskpaneController;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
-
+import java.util.ResourceBundle;
 import javafx.animation.Animation;
-import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,17 +50,19 @@ public class HelloController implements Initializable {
     private TaskModel taskModel;
     final double onePartBar = 43.4;
 
-    private final CalendarData calendarData = CalendarData.fromFilepath(
-        System.getProperty("user.dir") +
-        "/src/main/resources/com/example/mierda/calendarData.json");
+    private CalendarData calendarData;
     private CalendarModel calendarModel;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.calendarData = CalendarData.fromFilepath(
+            System.getProperty("user.dir") +
+            "/src/main/resources/com/example/mierda/calendarData.json");
+        this.taskModel = new TaskModel(this.taskPane);
+        updateDataState();
         moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
         healthBar.setPrefWidth(calendarData.getHealth());
         happyBar.setPrefWidth(calendarData.getHappy());
         eatBar.setPrefWidth(calendarData.getHungry());
-        this.taskModel = new TaskModel(this.taskPane);
         initAnimation();
         initCalendarComponent();
         initCreateTaskButton();
@@ -91,6 +86,14 @@ public class HelloController implements Initializable {
                 }
             }
         });
+    }
+
+    private void updateDataState() {
+        if (this.calendarData.isLoginToday()) {
+            return;
+        }
+        int completed = this.taskModel.revmoveCompletedTasks();
+        this.calendarData.skipDays(completed);
     }
 
     private void initCalendarComponent() {
@@ -223,6 +226,10 @@ public class HelloController implements Initializable {
                       ((SpriteAnimation)animation));
     }
 
+    public CalendarController getTaskController() {
+        return this.calendarModel.getController();
+    }
+
     private void eating(AnchorPane bar, Button button) {
         button.addEventHandler(
             MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -235,9 +242,15 @@ public class HelloController implements Initializable {
                             return;
                         } else {
                             bar.setPrefWidth(bar.getWidth() + onePartBar);
-                            if (bar == healthBar) calendarData.setHealth((int) bar.getWidth() + (int) onePartBar);
-                            else if (bar == happyBar) calendarData.setHappy((int) bar.getWidth() + (int) onePartBar);
-                            else if (bar == eatBar) calendarData.setHungry((int) bar.getWidth() + (int) onePartBar);
+                            if (bar == healthBar)
+                                calendarData.setHealth((int)bar.getWidth() +
+                                                       (int)onePartBar);
+                            else if (bar == happyBar)
+                                calendarData.setHappy((int)bar.getWidth() +
+                                                      (int)onePartBar);
+                            else if (bar == eatBar)
+                                calendarData.setHungry((int)bar.getWidth() +
+                                                       (int)onePartBar);
                             calendarData.addMoney(-10);
                             moneyLabel.setText(
                                 Integer.toString(calendarData.getMoney()));
@@ -248,9 +261,12 @@ public class HelloController implements Initializable {
                             healthBar.getMinWidth()) {
                             return;
                         } else {
-                            if (bar == healthBar) calendarData.setHealth((int) bar.getMaxWidth());
-                            else if (bar == happyBar) calendarData.setHappy((int) bar.getMaxWidth());
-                            else if (bar == eatBar) calendarData.setHungry((int) bar.getMaxWidth());
+                            if (bar == healthBar)
+                                calendarData.setHealth((int)bar.getMaxWidth());
+                            else if (bar == happyBar)
+                                calendarData.setHappy((int)bar.getMaxWidth());
+                            else if (bar == eatBar)
+                                calendarData.setHungry((int)bar.getMaxWidth());
                             bar.setPrefWidth(bar.getMaxWidth());
                             calendarData.addMoney(-10);
                             moneyLabel.setText(

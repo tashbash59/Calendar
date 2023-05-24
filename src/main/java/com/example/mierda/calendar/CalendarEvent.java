@@ -2,7 +2,6 @@ package com.example.mierda.calendar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import org.json.JSONObject;
 
 public class CalendarEvent {

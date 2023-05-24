@@ -1,6 +1,7 @@
 {
-    "hungry": 434,
-    "money": 1,
-    "happy": 434,
-    "health": 44
+    "hungry": 0,
+    "money": 99263,
+    "happy": 0,
+    "health": 0,
+    "lastLoginDate": "24052023"
 }
