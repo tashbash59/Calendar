@@ -2,6 +2,8 @@ package com.example.mierda.tasks;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,14 +15,17 @@ import org.json.JSONObject;
 
 public class TaskModel {
     final String jsonLocation =
-        System.getProperty("user.dir") +
-        "/src/main/resources/com/example/mierda/tasks.json";
-    ArrayList<Task> tasks;
-    ArrayList<TaskObserver> observers;
-    TaskpaneController controller;
+            System.getProperty("user.dir") +
+                    "/src/main/resources/com/example/mierda/tasks.json";
+    private final InputStream file = getClass().getResourceAsStream("/tasks.json");
+    private ArrayList<Task> tasks;
+    private ArrayList<TaskObserver> observers;
+    private TaskpaneController controller;
+    private Class parentClass;
 
-    public TaskModel(AnchorPane taskPane) {
-        this.controller = new TaskpaneController(taskPane, this);
+    public TaskModel(AnchorPane taskPane, Class parentClass) {
+        this.parentClass = parentClass;
+        this.controller = new TaskpaneController(taskPane, this, this.parentClass);
         this.tasks = new ArrayList<>();
         this.observers = new ArrayList<>();
         this.addObserver(this.controller);
@@ -65,13 +70,14 @@ public class TaskModel {
     }
 
     private void parseJSON() {
-        String jsonString;
+        String jsonString = "[]";
         try {
             jsonString =
-                new String(Files.readAllBytes(Paths.get(this.jsonLocation)));
+                    new String(Files.readAllBytes(Paths.get(this.jsonLocation)));
         } catch (Exception e) {
             return;
         }
+
         JSONArray content = new JSONArray(jsonString);
         Iterator<Object> iter = content.iterator();
         while (iter.hasNext()) {
@@ -91,7 +97,7 @@ public class TaskModel {
             writer.write(object.toString(4));
             writer.close();
         } catch (Exception e) {
-            System.out.println("Could not save the file due to: " + e);
+            System.out.println("Could not save the file");
         }
     }
 }

@@ -32,13 +32,14 @@ public class TaskCreationWindow {
     private RadioButton[] priorityButtons;
     private Button saveButton;
     private TaskModel taskModel;
+    private Class parentClass;
 
-    public TaskCreationWindow(Window window, TaskModel taskModel) {
-        this(window, taskModel, "");
+    public TaskCreationWindow(Window window, TaskModel taskModel, Class parentClass) {
+        this(window, taskModel, "", parentClass);
     }
     public TaskCreationWindow(Window window, TaskModel taskModel,
-                              Task attachedTask) {
-        this(window, taskModel, attachedTask.getName());
+                              Task attachedTask, Class parentClass) {
+        this(window, taskModel, attachedTask.getName(), parentClass);
         this.containerRight.getChildren().remove(saveButton);
         this.taskDescriptionTextField.setText(attachedTask.getDescritpion());
         this.priorityButtons[attachedTask.getPriority().getValue()].setSelected(
@@ -65,9 +66,10 @@ public class TaskCreationWindow {
         this.containerRight.getChildren().add(controlsContainer);
     }
     public TaskCreationWindow(Window window, TaskModel taskModel,
-                              String initialText) {
+                              String initialText, Class parentClass) {
         final Stage dialog = new Stage();
         this.mainConatiner = new HBox();
+        this.parentClass = parentClass;
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(window);
         this.containerLeft = new VBox(20);
@@ -104,9 +106,7 @@ public class TaskCreationWindow {
     }
 
     private ImageView getImage() {
-        File file = new File(System.getProperty("user.dir") +
-                             "/src/main/images/taskCreation.png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(parentClass.getResourceAsStream("/images/taskCreation.png"));
         ImageView imageView = new ImageView(image);
         return imageView;
     }

@@ -57,7 +57,7 @@ public class HelloController implements Initializable {
         this.calendarData = CalendarData.fromFilepath(
             System.getProperty("user.dir") +
             "/src/main/resources/com/example/mierda/calendarData.json");
-        this.taskModel = new TaskModel(this.taskPane);
+        this.taskModel = new TaskModel(this.taskPane, this.getClass());
         updateDataState();
         moneyLabel.setText(Integer.toString(this.calendarData.getMoney()));
         healthBar.setPrefWidth(calendarData.getHealth());
@@ -79,10 +79,10 @@ public class HelloController implements Initializable {
                 if (text != null)
                     new TaskCreationWindow(
                         createTaskButton.getScene().getWindow(), taskModel,
-                        text);
+                        text, getClass());
                 else {
                     new TaskCreationWindow(
-                        createTaskButton.getScene().getWindow(), taskModel);
+                        createTaskButton.getScene().getWindow(), taskModel, getClass());
                 }
             }
         });
@@ -98,7 +98,7 @@ public class HelloController implements Initializable {
 
     private void initCalendarComponent() {
         this.calendarModel = new CalendarModel(
-            this.calendarData, this.calendarComponent, this.monthLabel);
+            this.calendarData, this.calendarComponent, this.monthLabel, getClass());
 
         this.calendarModel.getController().update();
     }
@@ -164,29 +164,21 @@ public class HelloController implements Initializable {
     }
 
     private void initAnimation() {
+        Image sleep = null;
+        try {
+            sleep = new Image(getClass().getResourceAsStream("/images/sleep.png"));} catch (Exception e) {
+        }
+        Image defaultM = new Image(getClass().getResourceAsStream("/images/default.png"));
+        Image eating =
+                new Image(getClass().getResourceAsStream("/images/eat.png"));
+        Image regen =
+                new Image(getClass().getResourceAsStream("/images/regen3.png"));
 
-        String currentDirectory = System.getProperty("user.dir");
-        File sleepFile =
-            new File(currentDirectory + "/src/main/images/sleep.png");
-        Image sleep = new Image(sleepFile.toURI().toString());
-        File defaultFile =
-            new File(currentDirectory + "/src/main/images/default.png");
-        Image defaultM = new Image(defaultFile.toURI().toString());
-        File eatingFile =
-            new File(currentDirectory + "/src/main/images/eat.png");
-        Image eating = new Image(eatingFile.toURI().toString());
-        File regenFile =
-            new File(currentDirectory + "/src/main/images/regen3.png");
-        Image regen = new Image(regenFile.toURI().toString());
-        File playFile =
-            new File(currentDirectory + "/src/main/images/game.png");
-        Image play = new Image(playFile.toURI().toString());
-        File deathFile =
-            new File(currentDirectory + "/src/main/images/death.png");
-        Image death = new Image(deathFile.toURI().toString());
-        File revivalFile =
-            new File(currentDirectory + "/src/main/images/revival.png");
-        Image revivalM = new Image(revivalFile.toURI().toString());
+        Image play = new Image(getClass().getResourceAsStream("/images/game.png"));
+        Image death =
+                new Image(getClass().getResourceAsStream("/images/death.png"));
+        Image revivalM =
+                new Image(getClass().getResourceAsStream("/images/revival.png"));
 
         final int COLUMNS = 6;
         final int COUNT = 24;

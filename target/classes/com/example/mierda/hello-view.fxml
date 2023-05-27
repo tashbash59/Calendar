@@ -52,7 +52,7 @@
                </children></AnchorPane>
             <ImageView fx:id="mierdaAnimation" fitHeight="219.0" fitWidth="326.0" layoutX="111.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../images/mierda.png" />
+                  <Image url="@../../../images/mierda.png" />
                </image></ImageView>
             <Button fx:id="eat" layoutX="39.0" layoutY="452.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" style="-fx-border-radius: 25px; -fx-background-radius: 25px; -fx-background-color: #D6D6D6;" text="покормить" />
             <Button fx:id="health" layoutX="152.0" layoutY="452.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" style="-fx-background-radius: 25px; -fx-background-color: #D6D6D6;" text="вылечить" />

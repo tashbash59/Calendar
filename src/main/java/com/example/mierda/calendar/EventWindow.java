@@ -42,11 +42,13 @@ public class EventWindow {
     private boolean isDisplayWindow;
     private Scene dialogScene;
     private CalendarEvent attachedEvent;
+    private Class parentClass;
 
     public EventWindow(Window window, CalendarModel calendarModel,
                        Calendar eventDate,
-                       ArrayList<CalendarEvent> attachedEvents) {
+                       ArrayList<CalendarEvent> attachedEvents, Class parentClass) {
         final Stage dialog = new Stage();
+        this.parentClass = parentClass;
         this.sceneAContainer = new HBox(10);
         this.sceneBContainer = new HBox(10);
         this.sceneAContainer.setStyle("-fx-background-color: white");
@@ -94,9 +96,7 @@ public class EventWindow {
 
     private VBox createSceneARightPart() {
         VBox sceneARightContainter = new VBox();
-        File file = new File(System.getProperty("user.dir") +
-                             "/src/main/images/SceneALeftImage.png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(parentClass.getResourceAsStream("/images/left.png"));
         ImageView imageView = new ImageView(image);
         sceneARightContainter.getChildren().add(imageView);
         sceneARightContainter.setStyle("-fx-background-color: white");
@@ -106,9 +106,7 @@ public class EventWindow {
 
     private VBox createSceneBRightPart() {
         VBox sceneBRightContainter = new VBox();
-        File file = new File(System.getProperty("user.dir") +
-                             "/src/main/images/SceneBRightImage.png");
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(parentClass.getResourceAsStream("/images/right.png"));
         ImageView imageView = new ImageView(image);
         sceneBRightContainter.getChildren().add(imageView);
         sceneBRightContainter.setStyle("-fx-background-color: white");

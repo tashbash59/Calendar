@@ -13,13 +13,14 @@ public class TaskComponent extends VBox {
     private final CalendarData calendarData = CalendarData.fromFilepath(
         System.getProperty("user.dir") +
         "/src/main/resources/com/example/mierda/calendarData.json");
-    TaskComponent(Task task, TaskModel taskModel) {
+    private Class parentClass;
+    TaskComponent(Task task, TaskModel taskModel, Class parentClass) {
         RadioButton taskName = new RadioButton(task.getName());
         taskName.getStyleClass().add("task-component");
         String style = taskName.getStyle() + "-fx-background-color: rgba(" +
                        task.getPriority().getRespectiveColorRGB() +
                        ", 0.3); -fx-background-insets: 0; -fx-padding: 4px;";
-
+        this.parentClass = parentClass;
         taskName.setStyle(style);
         taskName.setMinWidth(280);
         taskName.setMaxWidth(280);
@@ -30,15 +31,14 @@ public class TaskComponent extends VBox {
             taskName.getStyleClass().add("active");
 
         taskName.setOnMouseClicked(event -> {
-            new TaskCreationWindow(getScene().getWindow(), taskModel, task);
+            new TaskCreationWindow(getScene().getWindow(), taskModel, task, parentClass);
         });
 
         taskName.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Task newTask = new Task(task);
-                // я пытался сделать добавление монеток за сделанное задание,
-                // пока ничего не получилось
+
                 /*if (taskName.isSelected()) {
                     System.out.println("1");
                     calendarData.addMoney(10);

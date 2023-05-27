@@ -16,10 +16,8 @@ public class ModalController implements Initializable {
     @FXML private ImageView img;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String currentDirectory = System.getProperty("user.dir");
-        File defaultFile =
-                new File(currentDirectory + "/src/main/images/mierda.png");
-        Image mierda = new Image(defaultFile.toURI().toString());
+        Image mierda = new Image(this.getClass().getResourceAsStream("/images/mierda.png"));
+
         img.setImage(mierda);
         Сlose.setOnAction(actionEvent -> {
             Stage stage = (Stage) Сlose.getScene().getWindow();

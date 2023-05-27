@@ -19,11 +19,13 @@ public class TaskpaneController implements TaskObserver {
     private VBox taskContainer;
     private ScrollPane scrollContainer;
     private TaskModel taskModel;
+    private Class parentClass;
 
-    public TaskpaneController(AnchorPane taskPane, TaskModel taskModel) {
+    public TaskpaneController(AnchorPane taskPane, TaskModel taskModel, Class parentClass) {
         taskPane.getChildren().clear();
         this.taskModel = taskModel;
         this.taskPane = taskPane;
+        this.parentClass = parentClass;
         this.taskContainer = new VBox(SPACING_SIZE);
         this.scrollContainer = new ScrollPane(this.taskContainer);
         this.scrollContainer.setCache(false);
@@ -47,7 +49,7 @@ public class TaskpaneController implements TaskObserver {
         clearTaskPane();
         tasks.forEach(task -> {
             TaskComponent taskComponent =
-                new TaskComponent(task, this.taskModel);
+                new TaskComponent(task, this.taskModel, this.parentClass);
             this.taskContainer.getChildren().add(taskComponent);
         });
     }

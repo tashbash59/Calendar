@@ -13,10 +13,12 @@ public class CalendarController {
     private CalendarModel calendarModel;
     private Label monthLabel;
     private CalendarEntry today;
+    private Class parentClass;
 
     public CalendarController(AnchorPane calendarPane,
-                              CalendarModel calendarModel, Label monthLabel) {
+                              CalendarModel calendarModel, Label monthLabel, Class parentClass) {
         this.calendarPane = calendarPane;
+        this.parentClass = parentClass;
         this.calendarModel = calendarModel;
         this.monthLabel = monthLabel;
     }
@@ -24,7 +26,7 @@ public class CalendarController {
     public void invokeTodayEventWindow() {
         new EventWindow(calendarPane.getScene().getWindow(), calendarModel,
                         this.today.getDate(),
-                        calendarModel.getEvents(this.today.getDate()));
+                        calendarModel.getEvents(this.today.getDate()), this.parentClass);
     }
 
     public void clearCalendar() {
@@ -81,7 +83,8 @@ public class CalendarController {
                         new EventWindow(
                             calendarPane.getScene().getWindow(), calendarModel,
                             entry.getDate(),
-                            calendarModel.getEvents(entry.getDate()));
+                            calendarModel.getEvents(entry.getDate()),
+                                parentClass);
                     }
                 });
                 label.setStyle("-fx-font-size: 14px; -fx-font-weight: 400; " +

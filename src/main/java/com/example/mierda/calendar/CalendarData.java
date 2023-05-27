@@ -5,8 +5,6 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -39,37 +37,58 @@ public class CalendarData {
         }
         JSONObject object = new JSONObject(content);
 
-        Object money = object.get("money");
-        if (money != null) {
-            if (money.getClass().equals(Integer.valueOf(0).getClass()))
-                data.money = (Integer)money;
-        }
-        Object health = object.get("health");
-        if (health != null) {
-            if (health.getClass().equals(Integer.valueOf(0).getClass()))
-                data.health = (Integer)health;
-        }
-        Object hungry = object.get("hungry");
-        if (hungry != null) {
-            if (health.getClass().equals(Integer.valueOf(0).getClass()))
-                data.hungry = (Integer)hungry;
-        }
-        Object happy = object.get("happy");
-        if (happy != null) {
-            if (health.getClass().equals(Integer.valueOf(0).getClass()))
-                data.happy = (Integer)happy;
+        if (object.has("money")) {
+            Object money = object.get("money");
+            if (money != null) {
+                if (money.getClass().equals(Integer.valueOf(0).getClass()))
+                    data.money = (Integer) money;
+            } else {
+                data.money = 0;
+            }
+        } else {
+            data.money = 0;
         }
 
-        Object lastLoginDate = object.get("lastLoginDate");
-        if (lastLoginDate != null) {
-            if (lastLoginDate.getClass().equals(
-                    String.valueOf("").getClass())) {
-                Calendar calendar = Calendar.getInstance();
-                try {
-                    calendar.setTime(formatter.parse((String)lastLoginDate));
-                    data.lastLoginDate = calendar;
-                } catch (Exception e) {
-                    System.out.println("Could not parse the last login date");
+        if(object.has("health")) {
+            Object health = object.get("health");
+            if (health != null) {
+                if (health.getClass().equals(Integer.valueOf(0).getClass()))
+                    data.health = (Integer) health;
+            }
+        } else {
+            data.health = maxStat;
+        }
+
+        if (object.has("hungry")) {
+            Object hungry = object.get("hungry");
+            if (hungry != null) {
+                if (hungry.getClass().equals(Integer.valueOf(0).getClass()))
+                    data.hungry = (Integer) hungry;
+            }
+        } else {
+            data.hungry = maxStat;
+        }
+        if (object.has("happy")) {
+            Object happy = object.get("happy");
+            if (happy != null) {
+                if (happy.getClass().equals(Integer.valueOf(0).getClass()))
+                    data.happy = (Integer) happy;
+            } else {
+                data.happy = maxStat;
+            }
+        }
+        if (object.has("lastLoginDate")) {
+            Object lastLoginDate = object.get("lastLoginDate");
+            if (lastLoginDate != null) {
+                if (lastLoginDate.getClass().equals(
+                        String.valueOf("").getClass())) {
+                    Calendar calendar = Calendar.getInstance();
+                    try {
+                        calendar.setTime(formatter.parse((String) lastLoginDate));
+                        data.lastLoginDate = calendar;
+                    } catch (Exception e) {
+                        System.out.println("Could not parse the last login date");
+                    }
                 }
             }
         }
@@ -126,10 +145,35 @@ public class CalendarData {
         return events;
     }
 
-    public int getMoney() { return this.money; }
-    public int getHealth() { return this.health; }
-    public int getHappy() { return this.happy; }
-    public int getHungry() { return this.hungry; }
+    public int getMoney() {
+        if (this.money == null) {
+            return 0;
+        } else {
+            return this.money;
+        }
+    }
+    public int getHealth() {
+        if (this.health == null) {
+            return maxStat;
+        } else {
+            return this.health;
+        }
+    }
+    public int getHappy() {
+        if (this.happy == null) {
+            return maxStat;
+        } else {
+            return this.happy;
+        }
+    }
+
+    public int getHungry() {
+        if (this.hungry == null) {
+            return maxStat;
+        } else {
+            return this.hungry;
+        }
+    }
     public Calendar getLastLoginDate() { return this.lastLoginDate; }
 
     public void addMoney(int amount) {
@@ -179,6 +223,9 @@ public class CalendarData {
 
     public boolean isLoginToday() {
         Calendar calendar = Calendar.getInstance();
+        if (this.lastLoginDate == null) {
+            return true;
+        }
         return this.lastLoginDate.get(Calendar.DAY_OF_YEAR) ==
             calendar.get(Calendar.DAY_OF_YEAR) &&
             this.lastLoginDate.get(Calendar.YEAR) ==

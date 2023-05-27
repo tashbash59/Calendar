@@ -28,11 +28,12 @@ public class CalendarModel {
     private Label monthLabel;
 
     public CalendarModel(CalendarData data, AnchorPane calendarPane,
-                         Label monthLabel) {
+                         Label monthLabel, Class parentClass) {
         this.calendarPane = calendarPane;
+
         this.monthLabel = monthLabel;
         this.controller =
-            new CalendarController(this.calendarPane, this, this.monthLabel);
+            new CalendarController(this.calendarPane, this, this.monthLabel, parentClass);
         this.events = new Vector<>();
         this.data = data;
         Calendar startOfDisplayedMonth = Calendar.getInstance();
