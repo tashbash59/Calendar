@@ -3,7 +3,6 @@ package com.example.mierda;
 import com.example.mierda.calendar.CalendarData;
 import com.example.mierda.calendar.CalendarEntry;
 import com.example.mierda.calendar.CalendarModel;
-import com.example.mierda.calendar.TaskLink;
 import com.example.mierda.tasks.TaskCreationWindow;
 import com.example.mierda.tasks.TaskModel;
 import com.example.mierda.tasks.TaskpaneController;
@@ -11,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
@@ -235,9 +233,15 @@ public class HelloController implements Initializable {
                             return;
                         } else {
                             bar.setPrefWidth(bar.getWidth() + onePartBar);
-                            if (bar == healthBar) calendarData.setHealth((int) bar.getWidth() + (int) onePartBar);
-                            else if (bar == happyBar) calendarData.setHappy((int) bar.getWidth() + (int) onePartBar);
-                            else if (bar == eatBar) calendarData.setHungry((int) bar.getWidth() + (int) onePartBar);
+                            if (bar == healthBar)
+                                calendarData.setHealth((int)bar.getWidth() +
+                                                       (int)onePartBar);
+                            else if (bar == happyBar)
+                                calendarData.setHappy((int)bar.getWidth() +
+                                                      (int)onePartBar);
+                            else if (bar == eatBar)
+                                calendarData.setHungry((int)bar.getWidth() +
+                                                       (int)onePartBar);
                             calendarData.addMoney(-10);
                             moneyLabel.setText(
                                 Integer.toString(calendarData.getMoney()));
@@ -248,9 +252,12 @@ public class HelloController implements Initializable {
                             healthBar.getMinWidth()) {
                             return;
                         } else {
-                            if (bar == healthBar) calendarData.setHealth((int) bar.getMaxWidth());
-                            else if (bar == happyBar) calendarData.setHappy((int) bar.getMaxWidth());
-                            else if (bar == eatBar) calendarData.setHungry((int) bar.getMaxWidth());
+                            if (bar == healthBar)
+                                calendarData.setHealth((int)bar.getMaxWidth());
+                            else if (bar == happyBar)
+                                calendarData.setHappy((int)bar.getMaxWidth());
+                            else if (bar == eatBar)
+                                calendarData.setHungry((int)bar.getMaxWidth());
                             bar.setPrefWidth(bar.getMaxWidth());
                             calendarData.addMoney(-10);
                             moneyLabel.setText(
