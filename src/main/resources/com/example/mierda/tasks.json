@@ -1,17 +1,28 @@
 [
     {
+<<<<<<< HEAD
         "name": "Неприоритетная задача",
         "description": "Jfjhakjf",
+=======
+        "name": "Ofksfasl;jdfsad",
+        "description": "",
+>>>>>>> 7ef21a4 (Добавлено изменение состояния миерды со временем)
         "priority": 2,
         "isCompleted": false
     },
     {
+<<<<<<< HEAD
         "name": "привет",
         "description": "вцф",
+=======
+        "name": "Ofksfasl;jdfsad",
+        "description": "",
+>>>>>>> 7ef21a4 (Добавлено изменение состояния миерды со временем)
         "priority": 2,
         "isCompleted": false
     },
     {
+<<<<<<< HEAD
         "name": "привет!",
         "description": "вфц",
         "priority": 0,
@@ -21,6 +32,29 @@
         "name": "очень важная задача",
         "description": "надо сделать",
         "priority": 0,
+=======
+        "name": "Ofksfasl;jdfsad",
+        "description": "",
+        "priority": 2,
+        "isCompleted": false
+    },
+    {
+        "name": "Ofksfasl;jdfsad",
+        "description": "",
+        "priority": 2,
+        "isCompleted": false
+    },
+    {
+        "name": "Ofksfasl;jdfsad",
+        "description": "",
+        "priority": 2,
+        "isCompleted": false
+    },
+    {
+        "name": "Ofksfasl;jdfsad",
+        "description": "",
+        "priority": 2,
+>>>>>>> 7ef21a4 (Добавлено изменение состояния миерды со временем)
         "isCompleted": false
     }
 ]
